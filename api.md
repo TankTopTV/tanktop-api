@@ -23,8 +23,8 @@ Data is returned in JSON format.
 ## <a name="Matching"></a> Movie and TV matching API
 Use this API to match items in your catalog against the TankTop entertainment graph.
 
-|  |  |
-|--|--|
+|Endpoint | Function|
+|:--|:--|
 |`GET /api/1/<apikey>/match/<itemtype>/`| Get matches for a TV programme or movie|
 
 #### Parameters
@@ -78,8 +78,8 @@ Provide us with a catalog feed or API and we will match and ingest it for you.
 ## <a name="Ingestion"></a> TV and Movie Source Ingestion
 Tell TankTop about your Movie and TV catalog so that we can list it in our public services and/or in your white-label UI.  Please contact us to be allocated a source ID.
 
-|  |  |
-|--|--|
+|Endpoint | Function|
+|:--|:--|
 |`POST /api/1/ingest/<sourceid>/`| Set the current contents for a TV and Movie source |
 
 Post a JSON body to set the current contents of the source
@@ -105,8 +105,8 @@ Get metadata for the movies & TV shows.
 
 **Note**: This does not include synopses or images.
 
-|  |  |
-|--|--|
+|Endpoint | Function|
+|:--|:--|
 |`GET /api/1/<itemtype>/<itemid>/`| Get metadata for a single item |
 |`GET /api/1/<itemtype>/?id=X&id=Y`| Get metadata for a number of items |
 
@@ -116,8 +116,8 @@ Metadata format documentation coming soon.
 
 User profiles are only visible to the service that creates them.  The service may provide their own user IDs.
 
-|  |  |
-|--|--|
+|Endpoint | Function|
+|:--|:--|
 |`PUT /api/1/user/<userid>/` | create a user using your user id and set its initial profile|
 |`POST /api/1/user/` | create a user, we'll choose the user id|
 |`PATCH /api/1/user/<userid>/` | update an existing user profile|
@@ -129,8 +129,8 @@ User profiles are only visible to the service that creates them.  The service ma
 This is for tracking events that take place on your system so that user actions can feed into personalized listings and recommendations, as well as into analytics tracking.
 
 
-|  |  |
-|--|--|
+|Endpoint | Function|
+|:--|:--|
 |`POST /api/1/event/<userid>/<eventname>/<itemtype>/<itemid>/[<value>/]` | Create an event or add to a list |
 |`DELETE /api/1/event/<userid>/<eventname>/<itemtype>/<itemid>/`| Delete an event or remove from a list|
 |`GET /api/1/event/<userid>/<eventname>/<itemtype>/`| Get the items in a list, or for which an event has happened|
@@ -146,9 +146,9 @@ Documentation coming soon.
 
 Get personalized listings for movie & TV shows.  This is the list of available shows on your services, not including seen or hidden items, taking into account your category preferences, and ordered according to goodness, recency, category balance - essentially this is the 'magic' personalized lists of things available to you, ordered according to what you might be most interested to watch.
 
-|  |  |
-|--|--|
-|`GET /api/1/list/<userid>/<itemtype>/`| Get the personalised item list for the user |
+|Endpoint | Function|
+|:--|:--|
+|`GET /api/1/list/<userid>/<itemtype>/`| Get the personalized item list for the user |
 |`GET /api/1/list/_/<itemtype>/`| Get the best item list for anonymous users |
 
 Return value is a list of ids.  Can also expand that to include metadata associated with the ID, and list inclusion data for specified events.  E.g. you could ask for the first 12 movie IDs, get the catalog metadata for them, and whether the user has rated the items or added them to their watchlist.
