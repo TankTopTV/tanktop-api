@@ -34,7 +34,7 @@
         <h1>
 <a name="tank-top-tv-api" class="anchor" href="#tank-top-tv-api"><span class="octicon octicon-link"></span></a>Tank Top TV API</h1>
 
-<p>Welcome to the Tank Top TV APIs.  These are free to use for non-commercial use, but please get in touch with us at <a href="mailto:hello@tanktop.tv">hello@tanktop.tv</a> if you'd like to use them for commercial purposes.</p>
+<p>Welcome to the Tank Top TV APIs.  These are free to use for non-commercial use within reasonable usage limits, but please get in touch with us at <a href="mailto:hello@tanktop.tv">hello@tanktop.tv</a> if you'd like to use them for commercial purposes.</p>
 
 <p>You will need an API key.  Contact <a href="mailto:hello@tanktop.tv">hello@tanktop.tv</a> for details.</p>
 
@@ -213,7 +213,7 @@
 <th align="left">Function</th>
 </tr></thead>
 <tbody><tr>
-<td align="left"><code>POST /api/1/ingest/&lt;sourceid&gt;/</code></td>
+<td align="left"><code>POST /api/1/&lt;apikey&gt;/ingest/&lt;sourceid&gt;/</code></td>
 <td align="left">Set the current contents for a TV and Movie source</td>
 </tr></tbody>
 </table><p>Post a JSON body to set the current contents of the source</p>
@@ -249,11 +249,11 @@
 </tr></thead>
 <tbody>
 <tr>
-<td align="left"><code>GET /api/1/&lt;itemtype&gt;/&lt;itemid&gt;/</code></td>
+<td align="left"><code>GET /api/1/&lt;apikey&gt;/&lt;itemtype&gt;/&lt;itemid&gt;/</code></td>
 <td align="left">Get metadata for a single item</td>
 </tr>
 <tr>
-<td align="left"><code>GET /api/1/&lt;itemtype&gt;/?id=X&amp;id=Y</code></td>
+<td align="left"><code>GET /api/1/&lt;apikey&gt;/&lt;itemtype&gt;/?id=X&amp;id=Y</code></td>
 <td align="left">Get metadata for a number of items</td>
 </tr>
 </tbody>
@@ -271,23 +271,23 @@
 </tr></thead>
 <tbody>
 <tr>
-<td align="left"><code>PUT /api/1/user/&lt;userid&gt;/</code></td>
+<td align="left"><code>PUT /api/1/&lt;apikey&gt;/user/&lt;userid&gt;/</code></td>
 <td align="left">create a user using your user id and set its initial profile</td>
 </tr>
 <tr>
-<td align="left"><code>POST /api/1/user/</code></td>
+<td align="left"><code>POST /api/1/&lt;apikey&gt;/user/</code></td>
 <td align="left">create a user, we'll choose the user id</td>
 </tr>
 <tr>
-<td align="left"><code>PATCH /api/1/user/&lt;userid&gt;/</code></td>
+<td align="left"><code>PATCH /api/1/&lt;apikey&gt;/user/&lt;userid&gt;/</code></td>
 <td align="left">update an existing user profile</td>
 </tr>
 <tr>
-<td align="left"><code>GET /api/1/user/&lt;userid&gt;/</code></td>
+<td align="left"><code>GET /api/1/&lt;apikey&gt;/user/&lt;userid&gt;/</code></td>
 <td align="left">retrieve user profile</td>
 </tr>
 <tr>
-<td align="left"><code>DELETE /api/1/user/&lt;userid&gt;/</code></td>
+<td align="left"><code>DELETE /api/1/&lt;apikey&gt;/user/&lt;userid&gt;/</code></td>
 <td align="left">deactivate a user</td>
 </tr>
 </tbody>
@@ -303,15 +303,15 @@
 </tr></thead>
 <tbody>
 <tr>
-<td align="left"><code>POST /api/1/event/&lt;userid&gt;/&lt;eventname&gt;/&lt;itemtype&gt;/&lt;itemid&gt;/[&lt;value&gt;/]</code></td>
+<td align="left"><code>POST /api/1/&lt;apikey&gt;/event/&lt;userid&gt;/&lt;eventname&gt;/&lt;itemtype&gt;/&lt;itemid&gt;/[&lt;value&gt;/]</code></td>
 <td align="left">Create an event or add to a list</td>
 </tr>
 <tr>
-<td align="left"><code>DELETE /api/1/event/&lt;userid&gt;/&lt;eventname&gt;/&lt;itemtype&gt;/&lt;itemid&gt;/</code></td>
+<td align="left"><code>DELETE /api/1/&lt;apikey&gt;/event/&lt;userid&gt;/&lt;eventname&gt;/&lt;itemtype&gt;/&lt;itemid&gt;/</code></td>
 <td align="left">Delete an event or remove from a list</td>
 </tr>
 <tr>
-<td align="left"><code>GET /api/1/event/&lt;userid&gt;/&lt;eventname&gt;/&lt;itemtype&gt;/</code></td>
+<td align="left"><code>GET /api/1/&lt;apikey&gt;/event/&lt;userid&gt;/&lt;eventname&gt;/&lt;itemtype&gt;/</code></td>
 <td align="left">Get the items in a list, or for which an event has happened</td>
 </tr>
 </tbody>
@@ -334,11 +334,11 @@
 </tr></thead>
 <tbody>
 <tr>
-<td align="left"><code>GET /api/1/list/&lt;userid&gt;/&lt;itemtype&gt;/</code></td>
+<td align="left"><code>GET /api/1/&lt;apikey&gt;/list/&lt;userid&gt;/&lt;itemtype&gt;/</code></td>
 <td align="left">Get the personalized item list for the user</td>
 </tr>
 <tr>
-<td align="left"><code>GET /api/1/list/_/&lt;itemtype&gt;/</code></td>
+<td align="left"><code>GET /api/1/&lt;apikey&gt;/list/_/&lt;itemtype&gt;/</code></td>
 <td align="left">Get the best item list for anonymous users</td>
 </tr>
 </tbody>
