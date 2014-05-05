@@ -1,6 +1,6 @@
 # Tank Top TV API
 
-Welcome to the Tank Top TV APIs.  These are free to use for non-commercial use, but please get in touch with us at <hello@tanktop.tv> if you'd like to use them for commercial purposes.
+Welcome to the Tank Top TV APIs.  These are free to use for non-commercial use within reasonable usage limits, but please get in touch with us at <hello@tanktop.tv> if you'd like to use them for commercial purposes.
 
 You will need an API key.  Contact <hello@tanktop.tv> for details.
 
@@ -80,7 +80,7 @@ Tell TankTop about your Movie and TV catalog so that we can list it in our publi
 
 |Endpoint | Function|
 |:--|:--|
-|`POST /api/1/ingest/<sourceid>/`| Set the current contents for a TV and Movie source |
+|`POST /api/1/<apikey>/ingest/<sourceid>/`| Set the current contents for a TV and Movie source |
 
 Post a JSON body to set the current contents of the source
 
@@ -107,8 +107,8 @@ Get metadata for the movies & TV shows.
 
 |Endpoint | Function|
 |:--|:--|
-|`GET /api/1/<itemtype>/<itemid>/`| Get metadata for a single item |
-|`GET /api/1/<itemtype>/?id=X&id=Y`| Get metadata for a number of items |
+|`GET /api/1/<apikey>/<itemtype>/<itemid>/`| Get metadata for a single item |
+|`GET /api/1/<apikey>/<itemtype>/?id=X&id=Y`| Get metadata for a number of items |
 
 Metadata format documentation coming soon.
 
@@ -118,11 +118,11 @@ User profiles are only visible to the service that creates them.  The service ma
 
 |Endpoint | Function|
 |:--|:--|
-|`PUT /api/1/user/<userid>/` | create a user using your user id and set its initial profile|
-|`POST /api/1/user/` | create a user, we'll choose the user id|
-|`PATCH /api/1/user/<userid>/` | update an existing user profile|
-|`GET /api/1/user/<userid>/` | retrieve user profile|
-|`DELETE /api/1/user/<userid>/` | deactivate a user|
+|`PUT /api/1/<apikey>/user/<userid>/` | create a user using your user id and set its initial profile|
+|`POST /api/1/<apikey>/user/` | create a user, we'll choose the user id|
+|`PATCH /api/1/<apikey>/user/<userid>/` | update an existing user profile|
+|`GET /api/1/<apikey>/user/<userid>/` | retrieve user profile|
+|`DELETE /api/1/<apikey>/user/<userid>/` | deactivate a user|
 
 
 ## <a name="UserActions"></a> User Actions and Events
@@ -131,9 +131,9 @@ This is for tracking events that take place on your system so that user actions 
 
 |Endpoint | Function|
 |:--|:--|
-|`POST /api/1/event/<userid>/<eventname>/<itemtype>/<itemid>/[<value>/]` | Create an event or add to a list |
-|`DELETE /api/1/event/<userid>/<eventname>/<itemtype>/<itemid>/`| Delete an event or remove from a list|
-|`GET /api/1/event/<userid>/<eventname>/<itemtype>/`| Get the items in a list, or for which an event has happened|
+|`POST /api/1/<apikey>/event/<userid>/<eventname>/<itemtype>/<itemid>/[<value>/]` | Create an event or add to a list |
+|`DELETE /api/1/<apikey>/event/<userid>/<eventname>/<itemtype>/<itemid>/`| Delete an event or remove from a list|
+|`GET /api/1/<apikey>/event/<userid>/<eventname>/<itemtype>/`| Get the items in a list, or for which an event has happened|
 
 
 POST to add to a list, DELETE to remove, GET returns the items currently in a list
@@ -148,8 +148,8 @@ Get personalized listings for movie & TV shows.  This is the list of available s
 
 |Endpoint | Function|
 |:--|:--|
-|`GET /api/1/list/<userid>/<itemtype>/`| Get the personalized item list for the user |
-|`GET /api/1/list/_/<itemtype>/`| Get the best item list for anonymous users |
+|`GET /api/1/<apikey>/list/<userid>/<itemtype>/`| Get the personalized item list for the user |
+|`GET /api/1/<apikey>/list/_/<itemtype>/`| Get the best item list for anonymous users |
 
 Return value is a list of ids.  Can also expand that to include metadata associated with the ID, and list inclusion data for specified events.  E.g. you could ask for the first 12 movie IDs, get the catalog metadata for them, and whether the user has rated the items or added them to their watchlist.
 
