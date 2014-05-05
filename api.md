@@ -1,8 +1,8 @@
 # Tank Top TV API
 
-Welcome to the Tank Top TV APIs.  These are free to use for non-commercial use, but please get in touch with us at hello@tanktop.tv if you'd like to use them for commercial purposes.
+Welcome to the Tank Top TV APIs.  These are free to use for non-commercial use, but please get in touch with us at <hello@tanktop.tv> if you'd like to use them for commercial purposes.
 
-You will need an API key.  Contact hello@tanktop.tv for details.
+You will need an API key.  Contact <hello@tanktop.tv> for details.
 
 1. [Movie and TV matching API](#Matching)
 2. [TV and Movie Source Ingestion](#Ingestion)
@@ -13,6 +13,12 @@ You will need an API key.  Contact hello@tanktop.tv for details.
 7. [Search & typeahead](#Search)
 
 We're still in the process of documenting our APIs but please get in touch if you're interested in using an endpoint that is not fully written-up yet.
+
+## API usage
+
+You will need an API key.  Contact <hello@tanktop.tv> for details.
+
+Data is returned in JSON format.
 
 ## <a name="Matching"></a> Movie and TV matching API
 Use this API to match items in your catalog against the TankTop entertainment graph.
@@ -26,11 +32,10 @@ Use this API to match items in your catalog against the TankTop entertainment gr
 |:--       |:--     | :--:     |
 | title    | Programme Title | y |
 | year     | Year of first release | n |
-| director | Director.  Movies only  | n |
+| director | Director (Movies only)  | n |
 | cast     | Cast members.  Any cast members you include help narrow down the match. Repeat the parameter to specify multiple cast members | n |
 
 #### Return values
-Data is returned in JSON format
 
 | Name | Description |
 |:-----|:------------|
@@ -43,7 +48,7 @@ If match_type is M the response contains the following additional fields
 | title | title |
 | director | Director - movies only |
 | year | Year of first release |
-| tt_id | Tanktop ID for the item |
+| tt_id | TankTop ID for the item |
 | rt_id | Rotten Tomatoes ID for the item (if available) |
 | imdb_id | IMDB ID for the item (if available) |
 
@@ -121,7 +126,7 @@ User profiles are only visible to the service that creates them.  The service ma
 
 
 ## <a name="UserActions"></a> User Actions and Events
- This is for tracking events that take place on your system so that user actions can feed into personalized listings and recommendations, as well as into analytics tracking.
+This is for tracking events that take place on your system so that user actions can feed into personalized listings and recommendations, as well as into analytics tracking.
 
 
 |  |  |
@@ -153,7 +158,6 @@ Return value is a list of ids.  Can also expand that to include metadata associa
 
 - Item-item similarity
 - Recommended items for a user
-- Note personalized list with recommendations woven through
 
 Documentation coming soon.
 
