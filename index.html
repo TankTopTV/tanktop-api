@@ -69,7 +69,9 @@
 <td align="left"><code>GET /api/1/&lt;apikey&gt;/match/&lt;itemtype&gt;/</code></td>
 <td align="left">Get matches for a TV programme or movie</td>
 </tr></tbody>
-</table><h4>
+</table><p>Valid itemtypes are <code>movie</code> and <code>programme</code>.</p>
+
+<h4>
 <a name="parameters" class="anchor" href="#parameters"><span class="octicon octicon-link"></span></a>Parameters</h4>
 
 <table>
@@ -197,7 +199,46 @@
 <td align="left">IMDB ID for the item (if available)</td>
 </tr>
 </tbody>
-</table><h3>
+</table><h4>
+<a name="examples" class="anchor" href="#examples"><span class="octicon octicon-link"></span></a>Examples</h4>
+
+<h5>
+<a name="request" class="anchor" href="#request"><span class="octicon octicon-link"></span></a>Request</h5>
+
+<p><code>http://movies.tanktop.tv/api/1/&lt;apikey&gt;/match/movie/?title=The%20Hunger%20Games&amp;director=Gary%20Ross&amp;year=2012</code></p>
+
+<h5>
+<a name="response" class="anchor" href="#response"><span class="octicon octicon-link"></span></a>Response</h5>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="err">director:</span> <span class="nt">"Gary Ross"</span><span class="p">,</span>
+    <span class="err">imdb_id:</span> <span class="nt">"1392170"</span><span class="p">,</span>
+    <span class="err">match_type:</span> <span class="nt">"M"</span><span class="p">,</span>
+    <span class="err">rt_id:</span> <span class="err">771190618,</span>
+    <span class="err">title:</span> <span class="nt">"The Hunger Games"</span><span class="p">,</span>
+    <span class="err">tt_id:</span> <span class="err">2108,</span>
+    <span class="err">year:</span> <span class="err">2012</span>
+<span class="p">}</span>
+</pre></div>
+
+<h5>
+<a name="request-1" class="anchor" href="#request-1"><span class="octicon octicon-link"></span></a>Request</h5>
+
+<p><code>http://movies.tanktop.tv/api/1/&lt;apikey&gt;/match/programme/?title=Vikings&amp;cast=Travis+Fimmel&amp;cast=Clive+Standen</code></p>
+
+<h5>
+<a name="response-1" class="anchor" href="#response-1"><span class="octicon octicon-link"></span></a>Response</h5>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="err">imdb_id:</span> <span class="nt">"tt2306299"</span><span class="p">,</span>
+    <span class="err">match_type:</span> <span class="nt">"M"</span><span class="p">,</span>
+    <span class="err">title:</span> <span class="nt">"Vikings"</span><span class="p">,</span>
+    <span class="err">tt_id:</span> <span class="err">268,</span>
+    <span class="err">tvdb_id:</span> <span class="err">260449,</span>
+<span class="p">}</span>
+</pre></div>
+
+<h3>
 <a name="matching-and-ingestion-service" class="anchor" href="#matching-and-ingestion-service"><span class="octicon octicon-link"></span></a>Matching and ingestion service</h3>
 
 <p>Provide us with a catalog feed or API and we will match and ingest it for you.</p>
@@ -283,6 +324,10 @@
 <td align="left">update an existing user profile</td>
 </tr>
 <tr>
+<td align="left"><code>POST /api/1/&lt;apikey&gt;/user/&lt;userid&gt;/</code></td>
+<td align="left">update an existing user profile</td>
+</tr>
+<tr>
 <td align="left"><code>GET /api/1/&lt;apikey&gt;/user/&lt;userid&gt;/</code></td>
 <td align="left">retrieve user profile</td>
 </tr>
@@ -291,6 +336,18 @@
 <td align="left">deactivate a user</td>
 </tr>
 </tbody>
+</table><p>The user profile is a set of key, value pairs.  Certain keys have meaning to the system, but arbitrary pairs may be
+stored. Keys beginning with _ are reserved.</p>
+
+<table>
+<thead><tr>
+<th align="left">key</th>
+<th align="left">value</th>
+</tr></thead>
+<tbody><tr>
+<td align="left">id</td>
+<td align="left">user ID corresponding to the profile</td>
+</tr></tbody>
 </table><h2>
 <a name="-user-actions-and-events" class="anchor" href="#-user-actions-and-events"><span class="octicon octicon-link"></span></a><a name="UserActions"></a> User Actions and Events</h2>
 
