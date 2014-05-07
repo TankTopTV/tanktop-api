@@ -355,7 +355,7 @@ of sources.</p>
 </tr></thead>
 <tbody><tr>
 <td align="left"><code>GET /api/1/&lt;apikey&gt;/list/_/&lt;itemtype&gt;/</code></td>
-<td align="left">Get metadata for a single item</td>
+<td align="left">List TV and movies</td>
 </tr></tbody>
 </table><h3>
 <a name="parameters-1" class="anchor" href="#parameters-1"><span class="octicon octicon-link"></span></a>Parameters</h3>
@@ -388,19 +388,19 @@ of sources.</p>
 </tr>
 <tr>
 <td align="left">min_year</td>
-<td align="left"></td>
+<td align="left">Filter by release year</td>
 </tr>
 <tr>
 <td align="left">max_year</td>
-<td align="left"></td>
+<td align="left">Filter by release year</td>
 </tr>
 <tr>
 <td align="left">rent</td>
-<td align="left"></td>
+<td align="left">Set to true to return only items that are available to rent</td>
 </tr>
 <tr>
 <td align="left">buy</td>
-<td align="left"></td>
+<td align="left">Set to true to return only items that are available to buy</td>
 </tr>
 <tr>
 <td align="left">start</td>
@@ -412,13 +412,22 @@ of sources.</p>
 </tr>
 <tr>
 <td align="left">query</td>
-<td align="left"></td>
+<td align="left">A query string that is matched against Title, actor name and director name</td>
 </tr>
 </tbody>
 </table><h3>
 <a name="returned-values" class="anchor" href="#returned-values"><span class="octicon octicon-link"></span></a>Returned values</h3>
 
-<h2>
+<table>
+<thead><tr>
+<th align="left">Name</th>
+<th align="left">Value</th>
+</tr></thead>
+<tbody><tr>
+<td align="left">ids</td>
+<td align="left">A list of movie or TV ids</td>
+</tr></tbody>
+</table><h2>
 <a name="tv-and-movie-data" class="anchor" href="#tv-and-movie-data"><span class="octicon octicon-link"></span></a><a name="ItemData"></a>TV and Movie data</h2>
 
 <p>Get metadata for the movies &amp; TV shows.</p>
@@ -442,7 +451,264 @@ of sources.</p>
 </tbody>
 </table><p>Metadata format documentation coming soon.</p>
 
-<h2>
+<h3>
+<a name="returned-values-1" class="anchor" href="#returned-values-1"><span class="octicon octicon-link"></span></a>Returned values</h3>
+
+<table>
+<thead><tr>
+<th align="left">Name</th>
+<th align="left">Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">programmes</td>
+<td align="left">A list of TV programme objects</td>
+</tr>
+<tr>
+<td align="left">movies</td>
+<td align="left">A list of movie objects</td>
+</tr>
+</tbody>
+</table><h4>
+<a name="programme-objects" class="anchor" href="#programme-objects"><span class="octicon octicon-link"></span></a>Programme objects</h4>
+
+<table>
+<thead><tr>
+<th align="left">Name</th>
+<th align="left">Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">id</td>
+<td align="left">The Tank Top id for the programme</td>
+</tr>
+<tr>
+<td align="left">actors</td>
+<td align="left">A list of actor objects</td>
+</tr>
+<tr>
+<td align="left">categories</td>
+<td align="left">A list of category objects</td>
+</tr>
+<tr>
+<td align="left">image_url</td>
+<td align="left">TVDB image for the programme.  ****</td>
+</tr>
+<tr>
+<td align="left">url</td>
+<td align="left">TVDB page for the programme. ****</td>
+</tr>
+<tr>
+<td align="left">our_url</td>
+<td align="left">Tank Top TV page for the programme</td>
+</tr>
+<tr>
+<td align="left">rating</td>
+<td align="left">TVDB rating for the programme</td>
+</tr>
+<tr>
+<td align="left">rating_count</td>
+<td align="left">Number of TVDB ratings contributing to rating</td>
+</tr>
+<tr>
+<td align="left">title</td>
+<td align="left">Programme title</td>
+</tr>
+<tr>
+<td align="left">instances</td>
+<td align="left">A list of programme instance objects</td>
+</tr>
+</tbody>
+</table><h4>
+<a name="movie-objects" class="anchor" href="#movie-objects"><span class="octicon octicon-link"></span></a>Movie objects</h4>
+
+<table>
+<thead><tr>
+<th align="left">Name</th>
+<th align="left">Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">id</td>
+<td align="left">The Tank Top id for the movie</td>
+</tr>
+<tr>
+<td align="left">actors</td>
+<td align="left">A list of actor objects</td>
+</tr>
+<tr>
+<td align="left">categories</td>
+<td align="left">A list of category objects</td>
+</tr>
+<tr>
+<td align="left">image_url</td>
+<td align="left">Rotten Tomatoes image for the movie.  ****</td>
+</tr>
+<tr>
+<td align="left">url</td>
+<td align="left">Rotten Tomatoes page for the movie. ****</td>
+</tr>
+<tr>
+<td align="left">our_url</td>
+<td align="left">Tank Top TV page for the movie</td>
+</tr>
+<tr>
+<td align="left">audience_vote</td>
+<td align="left">RT audience vote for the movie</td>
+</tr>
+<tr>
+<td align="left">vote</td>
+<td align="left">RT critic vote for the movie</td>
+</tr>
+<tr>
+<td align="left">title</td>
+<td align="left">Movie title</td>
+</tr>
+<tr>
+<td align="left">director_id</td>
+<td align="left">Tank Top ID for the movie director</td>
+</tr>
+<tr>
+<td align="left">director_name</td>
+<td align="left">Name of the director</td>
+</tr>
+<tr>
+<td align="left">instances</td>
+<td align="left">A list of movie instance objects</td>
+</tr>
+<tr>
+<td align="left">runtime</td>
+<td align="left">movie runtime in minutes</td>
+</tr>
+<tr>
+<td align="left">year</td>
+<td align="left">movie release year</td>
+</tr>
+</tbody>
+</table><h4>
+<a name="actor-objects" class="anchor" href="#actor-objects"><span class="octicon octicon-link"></span></a>Actor objects</h4>
+
+<table>
+<thead><tr>
+<th align="left">Name</th>
+<th align="left">Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">id</td>
+<td align="left">Tank Top actor ID</td>
+</tr>
+<tr>
+<td align="left">name</td>
+<td align="left">The actor's name</td>
+</tr>
+</tbody>
+</table><h4>
+<a name="category-objects" class="anchor" href="#category-objects"><span class="octicon octicon-link"></span></a>Category Objects</h4>
+
+<p>Note that TV categories are distinct from Movie categories but may have overlapping names
+or ids</p>
+
+<table>
+<thead><tr>
+<th align="left">Name</th>
+<th align="left">Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">id</td>
+<td align="left">Tank Top category ID</td>
+</tr>
+<tr>
+<td align="left">name</td>
+<td align="left">Category name</td>
+</tr>
+</tbody>
+</table><h4>
+<a name="programme-instance-objects" class="anchor" href="#programme-instance-objects"><span class="octicon octicon-link"></span></a>Programme Instance Objects</h4>
+
+<table>
+<thead><tr>
+<th align="left">Name</th>
+<th align="left">Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">id</td>
+<td align="left">Tank Top programme instance ID</td>
+</tr>
+<tr>
+<td align="left">source_id</td>
+<td align="left">Source ID</td>
+</tr>
+<tr>
+<td align="left">source_name</td>
+<td align="left">Source display name</td>
+</tr>
+<tr>
+<td align="left">country</td>
+<td align="left">Source country</td>
+</tr>
+<tr>
+<td align="left">url</td>
+<td align="left">URL for the source's page for the programme</td>
+</tr>
+<tr>
+<td align="left">series</td>
+<td align="left">list of series numbers available on the source</td>
+</tr>
+</tbody>
+</table><h4>
+<a name="movie-instance-objects" class="anchor" href="#movie-instance-objects"><span class="octicon octicon-link"></span></a>Movie Instance objects</h4>
+
+<table>
+<thead><tr>
+<th align="left">Name</th>
+<th align="left">Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">id</td>
+<td align="left">Tank Top movie instance ID</td>
+</tr>
+<tr>
+<td align="left">source_id</td>
+<td align="left">Source ID</td>
+</tr>
+<tr>
+<td align="left">source_name</td>
+<td align="left">Source display name</td>
+</tr>
+<tr>
+<td align="left">country</td>
+<td align="left">Source country</td>
+</tr>
+<tr>
+<td align="left">url</td>
+<td align="left">URL for the source's page for the movie</td>
+</tr>
+<tr>
+<td align="left">expires</td>
+<td align="left">if present, when the movie will no longer be available.  Time is in milliseconds since 1 Jan 1970 UTC</td>
+</tr>
+<tr>
+<td align="left">price_rent</td>
+<td align="left">SD rental price.  Price is in pence or cents depending on the country. 0 means free, -1 indicates as part of a subscription plan.  null or not present indicates unavailable.</td>
+</tr>
+<tr>
+<td align="left">price_rent_hd</td>
+<td align="left">HD rental price</td>
+</tr>
+<tr>
+<td align="left">price_buy</td>
+<td align="left">SD purchase price</td>
+</tr>
+<tr>
+<td align="left">price_buy_hd</td>
+<td align="left">HD purchase price</td>
+</tr>
+</tbody>
+</table><h2>
 <a name="-user-profiles" class="anchor" href="#-user-profiles"><span class="octicon octicon-link"></span></a><a name="UserProfiles"></a> User Profiles</h2>
 
 <p>User profiles are only visible to the service that creates them.  The service may provide their own user IDs.</p>
