@@ -40,7 +40,10 @@
 
 <ol>
 <li><a href="#Matching">Movie and TV matching API</a></li>
+<li><a href="#Sources">Movie and TV sources</a></li>
 <li><a href="#Ingestion">TV and Movie Source Ingestion</a></li>
+<li><a href="#ItemLists">Listing Movies and TV</a></li>
+<li><a href="#ItemData">TV and Movie data</a></li>
 <li><a href="#UserProfiles">User Profiles</a></li>
 <li><a href="#UserActions">User Actions and Events</a></li>
 <li><a href="#PersonalizedLists">Personalised Movie &amp; TV lists</a></li>
@@ -244,9 +247,73 @@
 <p>Provide us with a catalog feed or API and we will match and ingest it for you.</p>
 
 <h2>
+<a name="-movie-and-tv-sources" class="anchor" href="#-movie-and-tv-sources"><span class="octicon octicon-link"></span></a><a name="Sources"></a> Movie and TV Sources</h2>
+
+<p>Sources are providers of movies and TV, e.g. BBC iPlayer, iTunes.  This endpoint lists the sources that are currently
+available.  You will need source IDs from this endpoint to query what TV shows and Movies are available across a basket
+of sources.</p>
+
+<table>
+<thead><tr>
+<th align="left">Endpoint</th>
+<th align="left">Function</th>
+</tr></thead>
+<tbody><tr>
+<td align="left"><code>GET /api/1/&lt;apikey&gt;/source/</code></td>
+<td align="left">List the sources currently available</td>
+</tr></tbody>
+</table><table>
+<thead><tr>
+<th align="left">key</th>
+<th align="left">value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">id</td>
+<td align="left">Identifier for the source</td>
+</tr>
+<tr>
+<td align="left">payment_model</td>
+<td align="left">Either F for free or Ad supported, P for pay as you go, S for subscription or U for unknown.  New sources may be briefly listed as unknown</td>
+</tr>
+<tr>
+<td align="left">country</td>
+<td align="left">Country for the source.  For example iTunes has different catalogs for the UK and US. These are listed as two separate sources with different countries.</td>
+</tr>
+<tr>
+<td align="left">display_name</td>
+<td align="left">A user-appropriate name for the source</td>
+</tr>
+<tr>
+<td align="left">name</td>
+<td align="left">TankTop's internal name for the source</td>
+</tr>
+</tbody>
+</table><h4>
+<a name="response-2" class="anchor" href="#response-2"><span class="octicon octicon-link"></span></a>Response</h4>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="nt">"sources"</span><span class="p">:</span> <span class="p">[</span> <span class="p">{</span>
+            <span class="nt">"id"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="nt">"payment_model"</span><span class="p">:</span> <span class="s2">"F"</span><span class="p">,</span>
+            <span class="nt">"country"</span><span class="p">:</span> <span class="s2">"GB"</span><span class="p">,</span>
+            <span class="nt">"display_name"</span><span class="p">:</span> <span class="s2">"BBC"</span><span class="p">,</span>
+            <span class="nt">"name"</span><span class="p">:</span> <span class="s2">"BBC"</span>
+        <span class="p">},</span> <span class="p">{</span>
+            <span class="nt">"id"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="nt">"payment_model"</span><span class="p">:</span> <span class="s2">"P"</span><span class="p">,</span>
+            <span class="nt">"country"</span><span class="p">:</span> <span class="s2">"GB"</span><span class="p">,</span>
+            <span class="nt">"display_name"</span><span class="p">:</span> <span class="s2">"Virgin Online Movies"</span><span class="p">,</span>
+            <span class="nt">"name"</span><span class="p">:</span> <span class="s2">"VirginTV"</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2>
 <a name="-tv-and-movie-source-ingestion" class="anchor" href="#-tv-and-movie-source-ingestion"><span class="octicon octicon-link"></span></a><a name="Ingestion"></a> TV and Movie Source Ingestion</h2>
 
-<p>Tell TankTop about your Movie and TV catalog so that we can list it in our public services and/or in your white-label UI.  Please contact us to be allocated a source ID.</p>
+<p>Tell TankTop about your Movie and TV catalog so that we can list it in our public services and/or in your white-label UI.  Please contact us to be allocated a source ID.  Note only the owner of a source may ingest it.</p>
 
 <table>
 <thead><tr>
@@ -277,7 +344,82 @@
 <p>Documentation coming soon.</p>
 
 <h2>
-<a name="tv-programme-and-movie-data" class="anchor" href="#tv-programme-and-movie-data"><span class="octicon octicon-link"></span></a>TV Programme and Movie data</h2>
+<a name="tv-and-movie-lists" class="anchor" href="#tv-and-movie-lists"><span class="octicon octicon-link"></span></a><a name="ItemLists"></a>TV and Movie lists</h2>
+
+<p>Get lists of TV &amp; Movies.</p>
+
+<table>
+<thead><tr>
+<th align="left">Endpoint</th>
+<th align="left">Function</th>
+</tr></thead>
+<tbody><tr>
+<td align="left"><code>GET /api/1/&lt;apikey&gt;/list/_/&lt;itemtype&gt;/</code></td>
+<td align="left">Get metadata for a single item</td>
+</tr></tbody>
+</table><h3>
+<a name="parameters-1" class="anchor" href="#parameters-1"><span class="octicon octicon-link"></span></a>Parameters</h3>
+
+<table>
+<thead><tr>
+<th align="left">Name</th>
+<th align="left">Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">source_id</td>
+<td align="left">source IDs to include. Items are only returned if they are currently available on one of the given services. If none are specified then all items are returned whether the items are current or not</td>
+</tr>
+<tr>
+<td align="left">director_id</td>
+<td align="left">Movies only.  Return movies directed by this director</td>
+</tr>
+<tr>
+<td align="left">actor_id</td>
+<td align="left">Return items staring the actor</td>
+</tr>
+<tr>
+<td align="left">category_id</td>
+<td align="left">Return items in the category</td>
+</tr>
+<tr>
+<td align="left">max_price</td>
+<td align="left">Return items that are available on the included sources below the supplied price.  Price should be in pence or cents.  Note we do not yet support currency conversions</td>
+</tr>
+<tr>
+<td align="left">min_year</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">max_year</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">rent</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">buy</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">start</td>
+<td align="left">Where to start in the list of results. default 0</td>
+</tr>
+<tr>
+<td align="left">count</td>
+<td align="left">How many ids to return. default 12</td>
+</tr>
+<tr>
+<td align="left">query</td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table><h3>
+<a name="returned-values" class="anchor" href="#returned-values"><span class="octicon octicon-link"></span></a>Returned values</h3>
+
+<h2>
+<a name="tv-and-movie-data" class="anchor" href="#tv-and-movie-data"><span class="octicon octicon-link"></span></a><a name="ItemData"></a>TV and Movie data</h2>
 
 <p>Get metadata for the movies &amp; TV shows.</p>
 
