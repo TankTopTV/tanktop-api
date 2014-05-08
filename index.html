@@ -34,13 +34,16 @@
         <h1>
 <a name="tank-top-tv-api" class="anchor" href="#tank-top-tv-api"><span class="octicon octicon-link"></span></a>Tank Top TV API</h1>
 
-<p>Welcome to the Tank Top TV APIs.  These are free to use for non-commercial use, but please get in touch with us at <a href="mailto:hello@tanktop.tv">hello@tanktop.tv</a> if you'd like to use them for commercial purposes.</p>
+<p>Welcome to the Tank Top TV APIs.  These are free to use for non-commercial use within reasonable usage limits, but please get in touch with us at <a href="mailto:hello@tanktop.tv">hello@tanktop.tv</a> if you'd like to use them for commercial purposes.</p>
 
 <p>You will need an API key.  Contact <a href="mailto:hello@tanktop.tv">hello@tanktop.tv</a> for details.</p>
 
 <ol>
 <li><a href="#Matching">Movie and TV matching API</a></li>
+<li><a href="#Sources">Movie and TV sources</a></li>
 <li><a href="#Ingestion">TV and Movie Source Ingestion</a></li>
+<li><a href="#ItemLists">Listing Movies and TV</a></li>
+<li><a href="#ItemData">TV and Movie data</a></li>
 <li><a href="#UserProfiles">User Profiles</a></li>
 <li><a href="#UserActions">User Actions and Events</a></li>
 <li><a href="#PersonalizedLists">Personalised Movie &amp; TV lists</a></li>
@@ -69,7 +72,9 @@
 <td align="left"><code>GET /api/1/&lt;apikey&gt;/match/&lt;itemtype&gt;/</code></td>
 <td align="left">Get matches for a TV programme or movie</td>
 </tr></tbody>
-</table><h4>
+</table><p>Valid itemtypes are <code>movie</code> and <code>programme</code>.</p>
+
+<h4>
 <a name="parameters" class="anchor" href="#parameters"><span class="octicon octicon-link"></span></a>Parameters</h4>
 
 <table>
@@ -197,15 +202,56 @@
 <td align="left">IMDB ID for the item (if available)</td>
 </tr>
 </tbody>
-</table><h3>
+</table><h4>
+<a name="examples" class="anchor" href="#examples"><span class="octicon octicon-link"></span></a>Examples</h4>
+
+<h5>
+<a name="request" class="anchor" href="#request"><span class="octicon octicon-link"></span></a>Request</h5>
+
+<p><code>http://movies.tanktop.tv/api/1/&lt;apikey&gt;/match/movie/?title=The%20Hunger%20Games&amp;director=Gary%20Ross&amp;year=2012</code></p>
+
+<h5>
+<a name="response" class="anchor" href="#response"><span class="octicon octicon-link"></span></a>Response</h5>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="err">director:</span> <span class="nt">"Gary Ross"</span><span class="p">,</span>
+    <span class="err">imdb_id:</span> <span class="nt">"1392170"</span><span class="p">,</span>
+    <span class="err">match_type:</span> <span class="nt">"M"</span><span class="p">,</span>
+    <span class="err">rt_id:</span> <span class="err">771190618,</span>
+    <span class="err">title:</span> <span class="nt">"The Hunger Games"</span><span class="p">,</span>
+    <span class="err">tt_id:</span> <span class="err">2108,</span>
+    <span class="err">year:</span> <span class="err">2012</span>
+<span class="p">}</span>
+</pre></div>
+
+<h5>
+<a name="request-1" class="anchor" href="#request-1"><span class="octicon octicon-link"></span></a>Request</h5>
+
+<p><code>http://movies.tanktop.tv/api/1/&lt;apikey&gt;/match/programme/?title=Vikings&amp;cast=Travis+Fimmel&amp;cast=Clive+Standen</code></p>
+
+<h5>
+<a name="response-1" class="anchor" href="#response-1"><span class="octicon octicon-link"></span></a>Response</h5>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="err">imdb_id:</span> <span class="nt">"tt2306299"</span><span class="p">,</span>
+    <span class="err">match_type:</span> <span class="nt">"M"</span><span class="p">,</span>
+    <span class="err">title:</span> <span class="nt">"Vikings"</span><span class="p">,</span>
+    <span class="err">tt_id:</span> <span class="err">268,</span>
+    <span class="err">tvdb_id:</span> <span class="err">260449,</span>
+<span class="p">}</span>
+</pre></div>
+
+<h3>
 <a name="matching-and-ingestion-service" class="anchor" href="#matching-and-ingestion-service"><span class="octicon octicon-link"></span></a>Matching and ingestion service</h3>
 
 <p>Provide us with a catalog feed or API and we will match and ingest it for you.</p>
 
 <h2>
-<a name="-tv-and-movie-source-ingestion" class="anchor" href="#-tv-and-movie-source-ingestion"><span class="octicon octicon-link"></span></a><a name="Ingestion"></a> TV and Movie Source Ingestion</h2>
+<a name="-movie-and-tv-sources" class="anchor" href="#-movie-and-tv-sources"><span class="octicon octicon-link"></span></a><a name="Sources"></a> Movie and TV Sources</h2>
 
-<p>Tell TankTop about your Movie and TV catalog so that we can list it in our public services and/or in your white-label UI.  Please contact us to be allocated a source ID.</p>
+<p>Sources are providers of movies and TV, e.g. BBC iPlayer, iTunes.  This endpoint lists the sources that are currently
+available.  You will need source IDs from this endpoint to query what TV shows and Movies are available across a basket
+of sources.</p>
 
 <table>
 <thead><tr>
@@ -213,7 +259,69 @@
 <th align="left">Function</th>
 </tr></thead>
 <tbody><tr>
-<td align="left"><code>POST /api/1/ingest/&lt;sourceid&gt;/</code></td>
+<td align="left"><code>GET /api/1/&lt;apikey&gt;/source/</code></td>
+<td align="left">List the sources currently available</td>
+</tr></tbody>
+</table><table>
+<thead><tr>
+<th align="left">key</th>
+<th align="left">value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">id</td>
+<td align="left">Identifier for the source</td>
+</tr>
+<tr>
+<td align="left">payment_model</td>
+<td align="left">Either F for free or Ad supported, P for pay as you go, S for subscription or U for unknown.  New sources may be briefly listed as unknown</td>
+</tr>
+<tr>
+<td align="left">country</td>
+<td align="left">Country for the source.  For example iTunes has different catalogs for the UK and US. These are listed as two separate sources with different countries.</td>
+</tr>
+<tr>
+<td align="left">display_name</td>
+<td align="left">A user-appropriate name for the source</td>
+</tr>
+<tr>
+<td align="left">name</td>
+<td align="left">TankTop's internal name for the source</td>
+</tr>
+</tbody>
+</table><h4>
+<a name="response-2" class="anchor" href="#response-2"><span class="octicon octicon-link"></span></a>Response</h4>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="nt">"sources"</span><span class="p">:</span> <span class="p">[</span> <span class="p">{</span>
+            <span class="nt">"id"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="nt">"payment_model"</span><span class="p">:</span> <span class="s2">"F"</span><span class="p">,</span>
+            <span class="nt">"country"</span><span class="p">:</span> <span class="s2">"GB"</span><span class="p">,</span>
+            <span class="nt">"display_name"</span><span class="p">:</span> <span class="s2">"BBC"</span><span class="p">,</span>
+            <span class="nt">"name"</span><span class="p">:</span> <span class="s2">"BBC"</span>
+        <span class="p">},</span> <span class="p">{</span>
+            <span class="nt">"id"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="nt">"payment_model"</span><span class="p">:</span> <span class="s2">"P"</span><span class="p">,</span>
+            <span class="nt">"country"</span><span class="p">:</span> <span class="s2">"GB"</span><span class="p">,</span>
+            <span class="nt">"display_name"</span><span class="p">:</span> <span class="s2">"Virgin Online Movies"</span><span class="p">,</span>
+            <span class="nt">"name"</span><span class="p">:</span> <span class="s2">"VirginTV"</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2>
+<a name="-tv-and-movie-source-ingestion" class="anchor" href="#-tv-and-movie-source-ingestion"><span class="octicon octicon-link"></span></a><a name="Ingestion"></a> TV and Movie Source Ingestion</h2>
+
+<p>Tell TankTop about your Movie and TV catalog so that we can list it in our public services and/or in your white-label UI.  Please contact us to be allocated a source ID.  Note only the owner of a source may ingest it.</p>
+
+<table>
+<thead><tr>
+<th align="left">Endpoint</th>
+<th align="left">Function</th>
+</tr></thead>
+<tbody><tr>
+<td align="left"><code>POST /api/1/&lt;apikey&gt;/ingest/&lt;sourceid&gt;/</code></td>
 <td align="left">Set the current contents for a TV and Movie source</td>
 </tr></tbody>
 </table><p>Post a JSON body to set the current contents of the source</p>
@@ -236,7 +344,91 @@
 <p>Documentation coming soon.</p>
 
 <h2>
-<a name="tv-programme-and-movie-data" class="anchor" href="#tv-programme-and-movie-data"><span class="octicon octicon-link"></span></a>TV Programme and Movie data</h2>
+<a name="tv-and-movie-lists" class="anchor" href="#tv-and-movie-lists"><span class="octicon octicon-link"></span></a><a name="ItemLists"></a>TV and Movie lists</h2>
+
+<p>Get lists of TV &amp; Movies.</p>
+
+<table>
+<thead><tr>
+<th align="left">Endpoint</th>
+<th align="left">Function</th>
+</tr></thead>
+<tbody><tr>
+<td align="left"><code>GET /api/1/&lt;apikey&gt;/list/_/&lt;itemtype&gt;/</code></td>
+<td align="left">List TV and movies</td>
+</tr></tbody>
+</table><h3>
+<a name="parameters-1" class="anchor" href="#parameters-1"><span class="octicon octicon-link"></span></a>Parameters</h3>
+
+<table>
+<thead><tr>
+<th align="left">Name</th>
+<th align="left">Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">source_id</td>
+<td align="left">source IDs to include. Items are only returned if they are currently available on one of the given services. If none are specified then all items are returned whether the items are current or not</td>
+</tr>
+<tr>
+<td align="left">director_id</td>
+<td align="left">Movies only.  Return movies directed by this director</td>
+</tr>
+<tr>
+<td align="left">actor_id</td>
+<td align="left">Return items staring the actor</td>
+</tr>
+<tr>
+<td align="left">category_id</td>
+<td align="left">Return items in the category</td>
+</tr>
+<tr>
+<td align="left">max_price</td>
+<td align="left">Return items that are available on the included sources below the supplied price.  Price should be in pence or cents.  Note we do not yet support currency conversions</td>
+</tr>
+<tr>
+<td align="left">min_year</td>
+<td align="left">Filter by release year</td>
+</tr>
+<tr>
+<td align="left">max_year</td>
+<td align="left">Filter by release year</td>
+</tr>
+<tr>
+<td align="left">rent</td>
+<td align="left">Set to true to return only items that are available to rent</td>
+</tr>
+<tr>
+<td align="left">buy</td>
+<td align="left">Set to true to return only items that are available to buy</td>
+</tr>
+<tr>
+<td align="left">start</td>
+<td align="left">Where to start in the list of results. default 0</td>
+</tr>
+<tr>
+<td align="left">count</td>
+<td align="left">How many ids to return. default 12</td>
+</tr>
+<tr>
+<td align="left">query</td>
+<td align="left">A query string that is matched against Title, actor name and director name</td>
+</tr>
+</tbody>
+</table><h3>
+<a name="returned-values" class="anchor" href="#returned-values"><span class="octicon octicon-link"></span></a>Returned values</h3>
+
+<table>
+<thead><tr>
+<th align="left">Name</th>
+<th align="left">Value</th>
+</tr></thead>
+<tbody><tr>
+<td align="left">ids</td>
+<td align="left">A list of movie or TV ids</td>
+</tr></tbody>
+</table><h2>
+<a name="tv-and-movie-data" class="anchor" href="#tv-and-movie-data"><span class="octicon octicon-link"></span></a><a name="ItemData"></a>TV and Movie data</h2>
 
 <p>Get metadata for the movies &amp; TV shows.</p>
 
@@ -249,17 +441,274 @@
 </tr></thead>
 <tbody>
 <tr>
-<td align="left"><code>GET /api/1/&lt;itemtype&gt;/&lt;itemid&gt;/</code></td>
+<td align="left"><code>GET /api/1/&lt;apikey&gt;/&lt;itemtype&gt;/&lt;itemid&gt;/</code></td>
 <td align="left">Get metadata for a single item</td>
 </tr>
 <tr>
-<td align="left"><code>GET /api/1/&lt;itemtype&gt;/?id=X&amp;id=Y</code></td>
+<td align="left"><code>GET /api/1/&lt;apikey&gt;/&lt;itemtype&gt;/?id=X&amp;id=Y</code></td>
 <td align="left">Get metadata for a number of items</td>
 </tr>
 </tbody>
 </table><p>Metadata format documentation coming soon.</p>
 
-<h2>
+<h3>
+<a name="returned-values-1" class="anchor" href="#returned-values-1"><span class="octicon octicon-link"></span></a>Returned values</h3>
+
+<table>
+<thead><tr>
+<th align="left">Name</th>
+<th align="left">Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">programmes</td>
+<td align="left">A list of TV programme objects</td>
+</tr>
+<tr>
+<td align="left">movies</td>
+<td align="left">A list of movie objects</td>
+</tr>
+</tbody>
+</table><h4>
+<a name="programme-objects" class="anchor" href="#programme-objects"><span class="octicon octicon-link"></span></a>Programme objects</h4>
+
+<table>
+<thead><tr>
+<th align="left">Name</th>
+<th align="left">Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">id</td>
+<td align="left">The Tank Top id for the programme</td>
+</tr>
+<tr>
+<td align="left">actors</td>
+<td align="left">A list of actor objects</td>
+</tr>
+<tr>
+<td align="left">categories</td>
+<td align="left">A list of category objects</td>
+</tr>
+<tr>
+<td align="left">image_url</td>
+<td align="left">TVDB image for the programme.  ****</td>
+</tr>
+<tr>
+<td align="left">url</td>
+<td align="left">TVDB page for the programme. ****</td>
+</tr>
+<tr>
+<td align="left">our_url</td>
+<td align="left">Tank Top TV page for the programme</td>
+</tr>
+<tr>
+<td align="left">rating</td>
+<td align="left">TVDB rating for the programme</td>
+</tr>
+<tr>
+<td align="left">rating_count</td>
+<td align="left">Number of TVDB ratings contributing to rating</td>
+</tr>
+<tr>
+<td align="left">title</td>
+<td align="left">Programme title</td>
+</tr>
+<tr>
+<td align="left">instances</td>
+<td align="left">A list of programme instance objects</td>
+</tr>
+</tbody>
+</table><h4>
+<a name="movie-objects" class="anchor" href="#movie-objects"><span class="octicon octicon-link"></span></a>Movie objects</h4>
+
+<table>
+<thead><tr>
+<th align="left">Name</th>
+<th align="left">Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">id</td>
+<td align="left">The Tank Top id for the movie</td>
+</tr>
+<tr>
+<td align="left">actors</td>
+<td align="left">A list of actor objects</td>
+</tr>
+<tr>
+<td align="left">categories</td>
+<td align="left">A list of category objects</td>
+</tr>
+<tr>
+<td align="left">image_url</td>
+<td align="left">Rotten Tomatoes image for the movie.  ****</td>
+</tr>
+<tr>
+<td align="left">url</td>
+<td align="left">Rotten Tomatoes page for the movie. ****</td>
+</tr>
+<tr>
+<td align="left">our_url</td>
+<td align="left">Tank Top TV page for the movie</td>
+</tr>
+<tr>
+<td align="left">audience_vote</td>
+<td align="left">RT audience vote for the movie</td>
+</tr>
+<tr>
+<td align="left">vote</td>
+<td align="left">RT critic vote for the movie</td>
+</tr>
+<tr>
+<td align="left">title</td>
+<td align="left">Movie title</td>
+</tr>
+<tr>
+<td align="left">director_id</td>
+<td align="left">Tank Top ID for the movie director</td>
+</tr>
+<tr>
+<td align="left">director_name</td>
+<td align="left">Name of the director</td>
+</tr>
+<tr>
+<td align="left">instances</td>
+<td align="left">A list of movie instance objects</td>
+</tr>
+<tr>
+<td align="left">runtime</td>
+<td align="left">movie runtime in minutes</td>
+</tr>
+<tr>
+<td align="left">year</td>
+<td align="left">movie release year</td>
+</tr>
+</tbody>
+</table><h4>
+<a name="actor-objects" class="anchor" href="#actor-objects"><span class="octicon octicon-link"></span></a>Actor objects</h4>
+
+<table>
+<thead><tr>
+<th align="left">Name</th>
+<th align="left">Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">id</td>
+<td align="left">Tank Top actor ID</td>
+</tr>
+<tr>
+<td align="left">name</td>
+<td align="left">The actor's name</td>
+</tr>
+</tbody>
+</table><h4>
+<a name="category-objects" class="anchor" href="#category-objects"><span class="octicon octicon-link"></span></a>Category Objects</h4>
+
+<p>Note that TV categories are distinct from Movie categories but may have overlapping names
+or ids</p>
+
+<table>
+<thead><tr>
+<th align="left">Name</th>
+<th align="left">Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">id</td>
+<td align="left">Tank Top category ID</td>
+</tr>
+<tr>
+<td align="left">name</td>
+<td align="left">Category name</td>
+</tr>
+</tbody>
+</table><h4>
+<a name="programme-instance-objects" class="anchor" href="#programme-instance-objects"><span class="octicon octicon-link"></span></a>Programme Instance Objects</h4>
+
+<table>
+<thead><tr>
+<th align="left">Name</th>
+<th align="left">Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">id</td>
+<td align="left">Tank Top programme instance ID</td>
+</tr>
+<tr>
+<td align="left">source_id</td>
+<td align="left">Source ID</td>
+</tr>
+<tr>
+<td align="left">source_name</td>
+<td align="left">Source display name</td>
+</tr>
+<tr>
+<td align="left">country</td>
+<td align="left">Source country</td>
+</tr>
+<tr>
+<td align="left">url</td>
+<td align="left">URL for the source's page for the programme</td>
+</tr>
+<tr>
+<td align="left">series</td>
+<td align="left">list of series numbers available on the source</td>
+</tr>
+</tbody>
+</table><h4>
+<a name="movie-instance-objects" class="anchor" href="#movie-instance-objects"><span class="octicon octicon-link"></span></a>Movie Instance objects</h4>
+
+<table>
+<thead><tr>
+<th align="left">Name</th>
+<th align="left">Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">id</td>
+<td align="left">Tank Top movie instance ID</td>
+</tr>
+<tr>
+<td align="left">source_id</td>
+<td align="left">Source ID</td>
+</tr>
+<tr>
+<td align="left">source_name</td>
+<td align="left">Source display name</td>
+</tr>
+<tr>
+<td align="left">country</td>
+<td align="left">Source country</td>
+</tr>
+<tr>
+<td align="left">url</td>
+<td align="left">URL for the source's page for the movie</td>
+</tr>
+<tr>
+<td align="left">expires</td>
+<td align="left">if present, when the movie will no longer be available.  Time is in milliseconds since 1 Jan 1970 UTC</td>
+</tr>
+<tr>
+<td align="left">price_rent</td>
+<td align="left">SD rental price.  Price is in pence or cents depending on the country. 0 means free, -1 indicates as part of a subscription plan.  null or not present indicates unavailable.</td>
+</tr>
+<tr>
+<td align="left">price_rent_hd</td>
+<td align="left">HD rental price</td>
+</tr>
+<tr>
+<td align="left">price_buy</td>
+<td align="left">SD purchase price</td>
+</tr>
+<tr>
+<td align="left">price_buy_hd</td>
+<td align="left">HD purchase price</td>
+</tr>
+</tbody>
+</table><h2>
 <a name="-user-profiles" class="anchor" href="#-user-profiles"><span class="octicon octicon-link"></span></a><a name="UserProfiles"></a> User Profiles</h2>
 
 <p>User profiles are only visible to the service that creates them.  The service may provide their own user IDs.</p>
@@ -271,26 +720,42 @@
 </tr></thead>
 <tbody>
 <tr>
-<td align="left"><code>PUT /api/1/user/&lt;userid&gt;/</code></td>
+<td align="left"><code>PUT /api/1/&lt;apikey&gt;/user/&lt;userid&gt;/</code></td>
 <td align="left">create a user using your user id and set its initial profile</td>
 </tr>
 <tr>
-<td align="left"><code>POST /api/1/user/</code></td>
+<td align="left"><code>POST /api/1/&lt;apikey&gt;/user/</code></td>
 <td align="left">create a user, we'll choose the user id</td>
 </tr>
 <tr>
-<td align="left"><code>PATCH /api/1/user/&lt;userid&gt;/</code></td>
+<td align="left"><code>PATCH /api/1/&lt;apikey&gt;/user/&lt;userid&gt;/</code></td>
 <td align="left">update an existing user profile</td>
 </tr>
 <tr>
-<td align="left"><code>GET /api/1/user/&lt;userid&gt;/</code></td>
+<td align="left"><code>POST /api/1/&lt;apikey&gt;/user/&lt;userid&gt;/</code></td>
+<td align="left">update an existing user profile</td>
+</tr>
+<tr>
+<td align="left"><code>GET /api/1/&lt;apikey&gt;/user/&lt;userid&gt;/</code></td>
 <td align="left">retrieve user profile</td>
 </tr>
 <tr>
-<td align="left"><code>DELETE /api/1/user/&lt;userid&gt;/</code></td>
+<td align="left"><code>DELETE /api/1/&lt;apikey&gt;/user/&lt;userid&gt;/</code></td>
 <td align="left">deactivate a user</td>
 </tr>
 </tbody>
+</table><p>The user profile is a set of key, value pairs.  Certain keys have meaning to the system, but arbitrary pairs may be
+stored. Keys beginning with _ are reserved.</p>
+
+<table>
+<thead><tr>
+<th align="left">key</th>
+<th align="left">value</th>
+</tr></thead>
+<tbody><tr>
+<td align="left">id</td>
+<td align="left">user ID corresponding to the profile</td>
+</tr></tbody>
 </table><h2>
 <a name="-user-actions-and-events" class="anchor" href="#-user-actions-and-events"><span class="octicon octicon-link"></span></a><a name="UserActions"></a> User Actions and Events</h2>
 
@@ -303,15 +768,15 @@
 </tr></thead>
 <tbody>
 <tr>
-<td align="left"><code>POST /api/1/event/&lt;userid&gt;/&lt;eventname&gt;/&lt;itemtype&gt;/&lt;itemid&gt;/[&lt;value&gt;/]</code></td>
+<td align="left"><code>POST /api/1/&lt;apikey&gt;/event/&lt;userid&gt;/&lt;eventname&gt;/&lt;itemtype&gt;/&lt;itemid&gt;/[&lt;value&gt;/]</code></td>
 <td align="left">Create an event or add to a list</td>
 </tr>
 <tr>
-<td align="left"><code>DELETE /api/1/event/&lt;userid&gt;/&lt;eventname&gt;/&lt;itemtype&gt;/&lt;itemid&gt;/</code></td>
+<td align="left"><code>DELETE /api/1/&lt;apikey&gt;/event/&lt;userid&gt;/&lt;eventname&gt;/&lt;itemtype&gt;/&lt;itemid&gt;/</code></td>
 <td align="left">Delete an event or remove from a list</td>
 </tr>
 <tr>
-<td align="left"><code>GET /api/1/event/&lt;userid&gt;/&lt;eventname&gt;/&lt;itemtype&gt;/</code></td>
+<td align="left"><code>GET /api/1/&lt;apikey&gt;/event/&lt;userid&gt;/&lt;eventname&gt;/&lt;itemtype&gt;/</code></td>
 <td align="left">Get the items in a list, or for which an event has happened</td>
 </tr>
 </tbody>
@@ -334,11 +799,11 @@
 </tr></thead>
 <tbody>
 <tr>
-<td align="left"><code>GET /api/1/list/&lt;userid&gt;/&lt;itemtype&gt;/</code></td>
+<td align="left"><code>GET /api/1/&lt;apikey&gt;/list/&lt;userid&gt;/&lt;itemtype&gt;/</code></td>
 <td align="left">Get the personalized item list for the user</td>
 </tr>
 <tr>
-<td align="left"><code>GET /api/1/list/_/&lt;itemtype&gt;/</code></td>
+<td align="left"><code>GET /api/1/&lt;apikey&gt;/list/_/&lt;itemtype&gt;/</code></td>
 <td align="left">Get the best item list for anonymous users</td>
 </tr>
 </tbody>
