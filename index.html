@@ -214,13 +214,13 @@
 <a name="response" class="anchor" href="#response"><span class="octicon octicon-link"></span></a>Response</h5>
 
 <div class="highlight highlight-json"><pre><span class="p">{</span>
-    <span class="err">director:</span> <span class="nt">"Gary Ross"</span><span class="p">,</span>
-    <span class="err">imdb_id:</span> <span class="nt">"1392170"</span><span class="p">,</span>
-    <span class="err">match_type:</span> <span class="nt">"M"</span><span class="p">,</span>
-    <span class="err">rt_id:</span> <span class="err">771190618,</span>
-    <span class="err">title:</span> <span class="nt">"The Hunger Games"</span><span class="p">,</span>
-    <span class="err">tt_id:</span> <span class="err">2108,</span>
-    <span class="err">year:</span> <span class="err">2012</span>
+    <span class="nt">"director"</span><span class="p">:</span> <span class="s2">"Gary Ross"</span><span class="p">,</span>
+    <span class="nt">"imdb_id"</span><span class="p">:</span> <span class="s2">"1392170"</span><span class="p">,</span>
+    <span class="nt">"match_type"</span><span class="p">:</span> <span class="s2">"M"</span><span class="p">,</span>
+    <span class="nt">"rt_id"</span><span class="p">:</span> <span class="mi">771190618</span><span class="p">,</span>
+    <span class="nt">"title"</span><span class="p">:</span> <span class="s2">"The Hunger Games"</span><span class="p">,</span>
+    <span class="nt">"tt_id"</span><span class="p">:</span> <span class="mi">2108</span><span class="p">,</span>
+    <span class="nt">"year"</span><span class="p">:</span> <span class="mi">2012</span>
 <span class="p">}</span>
 </pre></div>
 
@@ -233,11 +233,11 @@
 <a name="response-1" class="anchor" href="#response-1"><span class="octicon octicon-link"></span></a>Response</h5>
 
 <div class="highlight highlight-json"><pre><span class="p">{</span>
-    <span class="err">imdb_id:</span> <span class="nt">"tt2306299"</span><span class="p">,</span>
-    <span class="err">match_type:</span> <span class="nt">"M"</span><span class="p">,</span>
-    <span class="err">title:</span> <span class="nt">"Vikings"</span><span class="p">,</span>
-    <span class="err">tt_id:</span> <span class="err">268,</span>
-    <span class="err">tvdb_id:</span> <span class="err">260449,</span>
+    <span class="nt">"imdb_id"</span><span class="p">:</span> <span class="s2">"tt2306299"</span><span class="p">,</span>
+    <span class="nt">"match_type"</span><span class="p">:</span> <span class="s2">"M"</span><span class="p">,</span>
+    <span class="nt">"title"</span><span class="p">:</span> <span class="s2">"Vikings"</span><span class="p">,</span>
+    <span class="nt">"tt_id"</span><span class="p">:</span> <span class="mi">268</span><span class="p">,</span>
+    <span class="nt">"tvdb_id"</span><span class="p">:</span> <span class="mi">260449</span><span class="p">,</span>
 <span class="p">}</span>
 </pre></div>
 
@@ -327,9 +327,9 @@ of sources.</p>
 </table><p>Post a JSON body to set the current contents of the source</p>
 
 <div class="highlight highlight-json"><pre><span class="p">{</span>
-    <span class="err">timestamp:</span> <span class="err">&lt;Format?&gt;</span>
-    <span class="err">tv:</span> <span class="err">[]</span>
-    <span class="err">movies:</span> <span class="err">[]</span>
+    <span class="nt">"timestamp"</span><span class="p">:</span> <span class="err">&lt;Format?&gt;</span>
+    <span class="s2">"tv"</span><span class="p">:</span> <span class="p">[]</span>
+    <span class="s2">"movies"</span><span class="p">:</span> <span class="p">[]</span>
 <span class="p">}</span>
 </pre></div>
 
@@ -783,11 +783,56 @@ stored. Keys beginning with _ are reserved.</p>
 </table><p>POST to add to a list, DELETE to remove, GET returns the items currently in a list</p>
 
 <h3>
+<a name="parameters-2" class="anchor" href="#parameters-2"><span class="octicon octicon-link"></span></a>Parameters</h3>
+
+<p>The GET version accepts a single parameter <strong>id</strong> which can be repeated. This specifies the item ids you want to query.  Our expectation is
+that you use events in the following manner.</p>
+
+<ol>
+<li>You retrieve a list of movie or programme ids.  See <a href="#PersonalizedLists">below</a> for how you can filter these by event so that you can, say, list only items on a watchlist, or exclude hidden or seen items.</li>
+<li>You retrieve the meta data for these ids.</li>
+<li>You get events for these ids, so that you can, for example, show the user's ratings for a show, or whether it is included in a watchlist.</li>
+</ol><h3>
 <a name="event-descriptions" class="anchor" href="#event-descriptions"><span class="octicon octicon-link"></span></a>Event descriptions</h3>
 
-<p>Documentation coming soon.</p>
+<p>The Tank Top system does not treat events with different names any differently (at present - we reserve the right to change this in future), but
+we recommend you keep to the following meanings and event names.</p>
 
-<h2>
+<table>
+<thead><tr>
+<th align="left">Event name</th>
+<th align="left">Description</th>
+<th align="left">Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">watchlist</td>
+<td align="left">Items the user wants to watch</td>
+<td align="left">Not used</td>
+</tr>
+<tr>
+<td align="left">seen</td>
+<td align="left">Items the user has seen</td>
+<td align="left">Not used</td>
+</tr>
+<tr>
+<td align="left">hide</td>
+<td align="left">Items the user wants to strike out of lists</td>
+<td align="left">Not used</td>
+</tr>
+<tr>
+<td align="left">rating</td>
+<td align="left">Items the user has rated</td>
+<td align="left">A numeric rating.  Use positive numbers for positive sentiments, negative numbers for negative sentiments</td>
+</tr>
+</tbody>
+</table><h4>
+<a name="coming-soon" class="anchor" href="#coming-soon"><span class="octicon octicon-link"></span></a>Coming soon</h4>
+
+<ul>
+<li>Multiple watchlists</li>
+<li>Events for TV episodes</li>
+</ul><h2>
 <a name="-personalized-movie-and-tv-lists" class="anchor" href="#-personalized-movie-and-tv-lists"><span class="octicon octicon-link"></span></a><a name="PersonalizedLists"></a> Personalized Movie and TV lists</h2>
 
 <p>Get personalized listings for movie &amp; TV shows.  This is the list of available shows on your services, not including seen or hidden items, taking into account your category preferences, and ordered according to goodness, recency, category balance - essentially this is the 'magic' personalized lists of things available to you, ordered according to what you might be most interested to watch.</p>
@@ -797,19 +842,31 @@ stored. Keys beginning with _ are reserved.</p>
 <th align="left">Endpoint</th>
 <th align="left">Function</th>
 </tr></thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td align="left"><code>GET /api/1/&lt;apikey&gt;/list/&lt;userid&gt;/&lt;itemtype&gt;/</code></td>
 <td align="left">Get the personalized item list for the user</td>
+</tr></tbody>
+</table><p>This is essentially an extension of <a href="#ItemLists">Listing Movies and TV</a>, adding a personalised dimension.  The URL is the same, with the _ replaced by a user ID.  We also have additional parameters to control how the list is filtered by events</p>
+
+<h3>
+<a name="parameters-3" class="anchor" href="#parameters-3"><span class="octicon octicon-link"></span></a>Parameters</h3>
+
+<table>
+<thead><tr>
+<th align="left">Name</th>
+<th align="left">Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">filter</td>
+<td align="left">An event name.  Include only items for which the user has registered an event of this name.  E.g. specify <code>filter=watchlist</code> to show the user's watchlist</td>
 </tr>
 <tr>
-<td align="left"><code>GET /api/1/&lt;apikey&gt;/list/_/&lt;itemtype&gt;/</code></td>
-<td align="left">Get the best item list for anonymous users</td>
+<td align="left">exclude</td>
+<td align="left">An event name.  Exclude items for which the user has registered an event of this name.  E.g. specify 'exclude=seen&amp;exclude=hide' to exclude items the user has seen or hidden</td>
 </tr>
 </tbody>
-</table><p>Return value is a list of ids.  Can also expand that to include metadata associated with the ID, and list inclusion data for specified events.  E.g. you could ask for the first 12 movie IDs, get the catalog metadata for them, and whether the user has rated the items or added them to their watchlist.</p>
-
-<h2>
+</table><h2>
 <a name="-recommendations" class="anchor" href="#-recommendations"><span class="octicon octicon-link"></span></a><a name="Recommendations"></a> Recommendations</h2>
 
 <ul>
