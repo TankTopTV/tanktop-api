@@ -836,7 +836,7 @@ or ids</p>
 <p>We support independent sets of user profiles for different services, one of which is the Tank Top TV service. Access to
 retrieving information from or Tank Top TV user profiles is via OAuth.  Please let us know at <a href="mailto:hello@tanktop.tv">hello@tanktop.tv</a> if this is something you are interested in.</p>
 
-<p>User profiles are only visible to the service that creates them.  The service may provide their own user IDs.</p>
+<p>You can use our User profiles API to store user settings and details as JSON data.  User profiles are only visible to the service that creates them.  The service may provide their own user IDs (up to 32 characters).</p>
 
 <table>
 <thead><tr>
@@ -869,19 +869,9 @@ retrieving information from or Tank Top TV user profiles is via OAuth.  Please l
 <td align="left">deactivate a user</td>
 </tr>
 </tbody>
-</table><p>The user profile is a set of key, value pairs.  Certain keys have meaning to the system, but arbitrary pairs may be
-stored. Keys beginning with _ are reserved.</p>
+</table><p>Profiles are JSON and you can store pretty much anything you want (but please, no important personal information just yet).  Currently, the only restrictions are that the user ID is stored under the key 'id', and that top-level keys starting _ are reserved for our future use.</p>
 
-<table>
-<thead><tr>
-<th align="left">key</th>
-<th align="left">value</th>
-</tr></thead>
-<tbody><tr>
-<td align="left">id</td>
-<td align="left">user ID corresponding to the profile</td>
-</tr></tbody>
-</table><h2>
+<h2>
 <a name="-user-actions-and-events" class="anchor" href="#-user-actions-and-events"><span class="octicon octicon-link"></span></a><a name="UserActions"></a> User Actions and Events</h2>
 
 <p>This is for tracking events that take place on your system so that user actions can feed into personalized listings and recommendations, as well as into analytics tracking.</p>
@@ -905,7 +895,9 @@ stored. Keys beginning with _ are reserved.</p>
 <td align="left">Get the items in a list, or for which an event has happened</td>
 </tr>
 </tbody>
-</table><p>POST to add to a list, DELETE to remove, GET returns the items currently in a list</p>
+</table><p>POST to add to a list, DELETE to remove, GET returns the items currently in a list.</p>
+
+<p>Note that the userid does not have to be registered with Tank Top: you don't need to use the user profile API to make use of personalised lists or events.</p>
 
 <h3>
 <a name="parameters-2" class="anchor" href="#parameters-2"><span class="octicon octicon-link"></span></a>Parameters</h3>
@@ -946,12 +938,37 @@ we recommend you keep to the following meanings and event names.</p>
 <td align="left">Not used</td>
 </tr>
 <tr>
-<td align="left">rating</td>
+<td align="left">rated</td>
 <td align="left">Items the user has rated</td>
 <td align="left">A numeric rating.  Use positive numbers for positive sentiments, negative numbers for negative sentiments</td>
 </tr>
 </tbody>
-</table><h4>
+</table><h3>
+<a name="examples-3" class="anchor" href="#examples-3"><span class="octicon octicon-link"></span></a>Examples</h3>
+
+<h4>
+<a name="request-6" class="anchor" href="#request-6"><span class="octicon octicon-link"></span></a>Request</h4>
+
+<p>Here we add movie 1 to user 7's watchlist.  There is no response.</p>
+
+<p><code>POST http://api.tanktop.tv/api/1/&lt;apikey&gt;/event/7/watchlist/movie/1/</code></p>
+
+<h4>
+<a name="request-7" class="anchor" href="#request-7"><span class="octicon octicon-link"></span></a>Request</h4>
+
+<p>Here we ask if movies 1, 24 and 72 are in the user's watchlist.  1 and 24 are, 72 is not.</p>
+
+<p><code>GET http://api.tanktop.tv/api/1/&lt;apikey&gt;/event/7/watchlist/movie/?id=1&amp;id=24&amp;id=72</code></p>
+
+<h4>
+<a name="response-7" class="anchor" href="#response-7"><span class="octicon octicon-link"></span></a>Response</h4>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="nt">"watchlist"</span><span class="p">:</span> <span class="p">{</span><span class="err">1:null,</span> <span class="err">24:null</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<h4>
 <a name="coming-soon" class="anchor" href="#coming-soon"><span class="octicon octicon-link"></span></a>Coming soon</h4>
 
 <ul>
@@ -972,6 +989,8 @@ we recommend you keep to the following meanings and event names.</p>
 <td align="left">Get the personalized item list for the user</td>
 </tr></tbody>
 </table><p>This is essentially an extension of <a href="#ItemLists">Listing Movies and TV</a>, adding a personalised dimension.  The URL is the same, with the _ replaced by a user ID.  We also have additional parameters to control how the list is filtered by events.</p>
+
+<p>Note that the userid does not have to be registered with Tank Top: you don't need to use the user profile API to make use of personalised lists or events.</p>
 
 <h3>
 <a name="parameters-3" class="anchor" href="#parameters-3"><span class="octicon octicon-link"></span></a>Parameters</h3>
@@ -1000,6 +1019,68 @@ we recommend you keep to the following meanings and event names.</p>
 </ul><p>Documentation coming soon.</p>
 
 <p>See also <a href="#PersonalizedLists">Personalized Lists</a>.</p>
+
+<h2>
+<a name="full-lists-in-one-query" class="anchor" href="#full-lists-in-one-query"><span class="octicon octicon-link"></span></a>Full lists in one query</h2>
+
+<p>This endpoint combines the results from id lists, movie and programme data and events all in one result.</p>
+
+<table>
+<thead><tr>
+<th align="left">Endpoint</th>
+<th align="left">Function</th>
+</tr></thead>
+<tbody><tr>
+<td align="left"><code>GET /api/1/&lt;apikey&gt;/fulllist/&lt;userid&gt;/&lt;itemtype&gt;/</code></td>
+<td align="left">Get the personalized item list for the user, rendered in JSON, with event filtering and annotation</td>
+</tr></tbody>
+</table><h3>
+<a name="parameters-4" class="anchor" href="#parameters-4"><span class="octicon octicon-link"></span></a>Parameters</h3>
+
+<p>Parameters for lists, movie and programme data and events all mixed together.</p>
+
+<h3>
+<a name="examples-4" class="anchor" href="#examples-4"><span class="octicon octicon-link"></span></a>Examples</h3>
+
+<p><code>GET http://api.tanktop.tv/api/1/&lt;apikey&gt;/fulllist/&lt;userid&gt;/movie/?start=0&amp;count=1&amp;exclude=seen&amp;exclude=hide&amp;event=watchlist&amp;event=rated</code></p>
+
+<div class="highlight highlight-json"><pre><span class="p">{</span>
+    <span class="nt">"programmes"</span><span class="p">:</span> <span class="p">[{</span>
+            <span class="nt">"rating"</span><span class="p">:</span> <span class="mf">9.3000000000000007</span><span class="p">,</span>
+            <span class="nt">"tvdb_id"</span><span class="p">:</span> <span class="mi">81189</span><span class="p">,</span>
+            <span class="nt">"title"</span><span class="p">:</span> <span class="s2">"Breaking Bad"</span><span class="p">,</span>
+            <span class="nt">"url"</span><span class="p">:</span> <span class="s2">"http://thetvdb.com/?tab=series&amp;id=81189"</span><span class="p">,</span>
+            <span class="nt">"series"</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="nt">"our_url"</span><span class="p">:</span> <span class="s2">"http%3A%2F%2Fmovies.tanktop.tv%2Fprogramme%2F379%2F%2FBreaking+Bad"</span><span class="p">,</span>
+            <span class="nt">"imdb_id"</span><span class="p">:</span> <span class="s2">"tt0903747"</span><span class="p">,</span>
+            <span class="nt">"instances"</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span><span class="nt">"price_buy_hd"</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span> <span class="nt">"source_name"</span><span class="p">:</span> <span class="s2">"BlinkBox"</span><span class="p">,</span> <span class="nt">"price_rent"</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span> <span class="nt">"url"</span><span class="p">:</span> <span class="s2">"/serviceclick/379/programme/626/programmeinstance/"</span><span class="p">,</span> <span class="nt">"series"</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="nt">"price_buy"</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span> <span class="nt">"visible"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nt">"country"</span><span class="p">:</span> <span class="s2">"GB"</span><span class="p">,</span> <span class="nt">"source_id"</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="nt">"id"</span><span class="p">:</span> <span class="mi">626</span><span class="p">,</span> <span class="nt">"price_rent_hd"</span><span class="p">:</span> <span class="kc">null</span><span class="p">},</span>
+                <span class="p">{</span><span class="nt">"price_buy_hd"</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span> <span class="nt">"source_name"</span><span class="p">:</span> <span class="s2">"Amazon Instant"</span><span class="p">,</span> <span class="nt">"price_rent"</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span> <span class="nt">"url"</span><span class="p">:</span> <span class="s2">"/serviceclick/379/programme/34747/programmeinstance/"</span><span class="p">,</span> <span class="nt">"series"</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="nt">"price_buy"</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span> <span class="nt">"visible"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nt">"country"</span><span class="p">:</span> <span class="s2">"GB"</span><span class="p">,</span> <span class="nt">"source_id"</span><span class="p">:</span> <span class="mi">35</span><span class="p">,</span> <span class="nt">"id"</span><span class="p">:</span> <span class="mi">34747</span><span class="p">,</span> <span class="nt">"price_rent_hd"</span><span class="p">:</span> <span class="kc">null</span><span class="p">},</span>
+                <span class="p">{</span><span class="nt">"price_buy_hd"</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span> <span class="nt">"source_name"</span><span class="p">:</span> <span class="s2">"Google Play"</span><span class="p">,</span> <span class="nt">"price_rent"</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span> <span class="nt">"url"</span><span class="p">:</span> <span class="s2">"/serviceclick/379/programme/37393/programmeinstance/"</span><span class="p">,</span> <span class="nt">"series"</span><span class="p">:</span> <span class="p">[</span><span class="kc">null</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="nt">"price_buy"</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span> <span class="nt">"visible"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nt">"country"</span><span class="p">:</span> <span class="s2">"US"</span><span class="p">,</span> <span class="nt">"source_id"</span><span class="p">:</span> <span class="mi">41</span><span class="p">,</span> <span class="nt">"id"</span><span class="p">:</span> <span class="mi">37393</span><span class="p">,</span> <span class="nt">"price_rent_hd"</span><span class="p">:</span> <span class="kc">null</span><span class="p">}</span>
+            <span class="p">],</span>
+            <span class="nt">"synopsis"</span><span class="p">:</span> <span class="s2">"Walter White, a struggling high school chemistry teacher, is diagnosed with advanced lung cancer. He turns to a life of crime, producing and selling methamphetamine accompanied by a former student, Jesse Pinkman, with the aim of securing his family's financial future before he dies."</span><span class="p">,</span>
+            <span class="nt">"rating_count"</span><span class="p">:</span> <span class="mi">614</span><span class="p">,</span>
+            <span class="nt">"image_url"</span><span class="p">:</span> <span class="s2">"http://thetvdb.com/banners/posters/81189-22.jpg"</span><span class="p">,</span>
+            <span class="nt">"actors"</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span><span class="nt">"name"</span><span class="p">:</span> <span class="s2">"Bob Odenkirk"</span><span class="p">,</span> <span class="nt">"id"</span><span class="p">:</span> <span class="mi">1074</span><span class="p">},</span>
+                <span class="p">{</span><span class="nt">"name"</span><span class="p">:</span> <span class="s2">"Bryan Cranston"</span><span class="p">,</span> <span class="nt">"id"</span><span class="p">:</span> <span class="mi">3293</span><span class="p">},</span>
+                <span class="p">{</span><span class="nt">"name"</span><span class="p">:</span> <span class="s2">"Jonathan Banks"</span><span class="p">,</span> <span class="nt">"id"</span><span class="p">:</span> <span class="mi">5692</span><span class="p">},</span>
+                <span class="p">{</span><span class="nt">"name"</span><span class="p">:</span> <span class="s2">"Giancarlo Esposito"</span><span class="p">,</span> <span class="nt">"id"</span><span class="p">:</span> <span class="mi">5788</span><span class="p">},</span>
+                <span class="p">{</span><span class="nt">"name"</span><span class="p">:</span> <span class="s2">"Aaron Paul"</span><span class="p">,</span> <span class="nt">"id"</span><span class="p">:</span> <span class="mi">10136</span><span class="p">}</span>
+            <span class="p">],</span>
+            <span class="nt">"id"</span><span class="p">:</span> <span class="mi">379</span><span class="p">,</span>
+            <span class="nt">"categories"</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span><span class="nt">"name"</span><span class="p">:</span> <span class="s2">"Comedy"</span><span class="p">,</span> <span class="nt">"id"</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+                <span class="p">{</span><span class="nt">"name"</span><span class="p">:</span> <span class="s2">"Drama"</span><span class="p">,</span> <span class="nt">"id"</span><span class="p">:</span> <span class="mi">4</span><span class="p">},</span>
+                <span class="p">{</span><span class="nt">"name"</span><span class="p">:</span> <span class="s2">"Crime"</span><span class="p">,</span> <span class="nt">"id"</span><span class="p">:</span> <span class="mi">8</span><span class="p">},</span>
+                <span class="p">{</span><span class="nt">"name"</span><span class="p">:</span> <span class="s2">"Thriller"</span><span class="p">,</span> <span class="nt">"id"</span><span class="p">:</span> <span class="mi">9</span><span class="p">},</span>
+                <span class="p">{</span><span class="nt">"name"</span><span class="p">:</span> <span class="s2">"Suspense"</span><span class="p">,</span> <span class="nt">"id"</span><span class="p">:</span> <span class="mi">11</span><span class="p">}</span>
+            <span class="p">]</span>
+        <span class="p">}]</span>
+    <span class="s2">"watchlist"</span><span class="p">:</span> <span class="p">{</span><span class="err">379:</span> <span class="err">null</span><span class="p">},</span>
+    <span class="nt">"rated"</span><span class="p">:</span> <span class="p">{</span><span class="err">379:</span> <span class="err">1</span><span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
 
 <h2>
 <a name="credits" class="anchor" href="#credits"><span class="octicon octicon-link"></span></a>Credits</h2>
