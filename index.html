@@ -47,6 +47,7 @@
 <li><a href="#PersonalizedLists">Personalised Movie &amp; TV lists</a></li>
 <li><a href="#Notifications">Notifications</a></li>
 <li><a href="#Recommendations">Recommendations</a></li>
+<li><a href="#URLLookup">Url lookup</a></li>
 </ol><p>We're still in the process of documenting our APIs but please get in touch if you're interested in using an endpoint that is not fully written-up yet.</p>
 
 <h2>
@@ -1253,6 +1254,166 @@ we recommend you keep to the following meanings and event names.</p>
     <span class="nt">"rated"</span><span class="p">:</span> <span class="p">{</span><span class="err">379:</span> <span class="err">1</span><span class="p">},</span>
 <span class="p">}</span>
 </pre></div>
+
+<h2>
+<a name="-url-lookup" class="anchor" href="#-url-lookup"><span class="octicon octicon-link"></span></a>
+<a name="URLLookup"></a> Url lookup</h2>
+
+<p>Look up movies and TV episodes by the URL from a VOD provider website.</p>
+
+<table>
+<thead><tr>
+<th align="left">Endpoint</th>
+<th align="left">Function</th>
+</tr></thead>
+<tbody><tr>
+<td align="left"><code>GET /api/1/&lt;apikey&gt;/lookup/byurl/</code></td>
+<td align="left">Look up an episode or movie by its url</td>
+</tr></tbody>
+</table><h3>
+<a name="parameters-6" class="anchor" href="#parameters-6"><span class="octicon octicon-link"></span></a>Parameters</h3>
+
+<table>
+<thead><tr>
+<th align="left">Name</th>
+<th align="left">Value</th>
+<th align="left">Required</th>
+</tr></thead>
+<tbody><tr>
+<td align="left">url</td>
+<td align="left">The canonical URL for the episode or film</td>
+<td align="left">Yes</td>
+</tr></tbody>
+</table><p>So far we have tested this with BBC IPlayer, ITVPlayer, 4oD &amp; Demand 5. Please read the notes on these below</p>
+
+<h4>
+<a name="bbc-iplayer" class="anchor" href="#bbc-iplayer"><span class="octicon octicon-link"></span></a>BBC IPlayer</h4>
+
+<p>Urls look like this <a href="http://www.bbc.co.uk/iplayer/episode/b048zhsh/hardtalk-patrick-honohan-governor-central-bank-of-ireland">http://www.bbc.co.uk/iplayer/episode/b048zhsh/hardtalk-patrick-honohan-governor-central-bank-of-ireland</a>.  Note there is no trailing / and the slug is separated by - not _.  This matches the canonical <code>&lt;link&gt;</code> tag in the header of the IPlayer page for the episode (shown below). It does <em>not</em> match the URL provided in the BBC RSS feeds or from the programme website (which is missing the slug)</p>
+
+<pre><code>&lt;link rel="canonical" href="http://www.bbc.co.uk/iplayer/episode/b048zhsh/hardtalk-patrick-honohan-governor-central-bank-of-ireland"&gt;
+</code></pre>
+
+<h4>
+<a name="itvplayer" class="anchor" href="#itvplayer"><span class="octicon octicon-link"></span></a>ITVPlayer</h4>
+
+<p>ITVPlayer appears to be consistent in its links.  Here's an example of the links <a href="https://www.itv.com/itvplayer/all-star-mr-and-mrs/series-6/episode-2">https://www.itv.com/itvplayer/all-star-mr-and-mrs/series-6/episode-2</a>.</p>
+
+<h4>
+<a name="4od" class="anchor" href="#4od"><span class="octicon octicon-link"></span></a>4oD</h4>
+
+<p>Episode URLs include a fragment identifier (a string following # at the end of the URL).  For example <a href="http://www.channel4.com/programmes/this-old-thing-the-vintage-clothes-show/4od#3720634">http://www.channel4.com/programmes/this-old-thing-the-vintage-clothes-show/4od#3720634</a>. You need to include the fragment ID in requests to the Tank Top API.</p>
+
+<p>On the 4oD site, links without fragments will refer to the latest available episode of the programme.E.g <a href="http://www.channel4.com/programmes/this-old-thing-the-vintage-clothes-show/4od">http://www.channel4.com/programmes/this-old-thing-the-vintage-clothes-show/4od</a> currently shows series 1 episode 2 in a "hero" section at the top of the page, as well as highlighting it below in a list of available episodes.  In the list, the episode is represented by an li tag with class="episode-item item-data cf has-audio-describe selected".  The key classes are 'episode-item' and 'selected'.  We can use these classes to find the correct URL for the episode with the following javascript.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">episode_li</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="s2">"episode-item selected"</span><span class="p">)[</span><span class="mi">0</span><span class="p">];</span>
+<span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span> <span class="o">+</span> <span class="s1">'#'</span> <span class="o">+</span> <span class="nx">episode_li</span><span class="p">.</span><span class="nx">dataset</span><span class="p">.</span><span class="nx">assetid</span><span class="p">;</span>
+</pre></div>
+
+<h4>
+<a name="demand-5" class="anchor" href="#demand-5"><span class="octicon octicon-link"></span></a>Demand 5</h4>
+
+<p>Demand 5 appears to be consistent in its links.  Here's an example: <a href="http://www.channel5.com/shows/thomas-and-friends/episodes/the-lion-of-sodor">http://www.channel5.com/shows/thomas-and-friends/episodes/the-lion-of-sodor</a>.</p>
+
+<h3>
+<a name="returned-values-3" class="anchor" href="#returned-values-3"><span class="octicon octicon-link"></span></a>Returned values</h3>
+
+<p>Tank Top represents movies by movie objects, and TV content by a hierachy of programme, series and episode objects.  To represent references to movies and TV on websites it has 'movie instance' objects, 'programme instance', 'series instance' and 'episode instance' objects. Instance objects link to the main object once their identity has been resolved, but can exist without links to the main objects if their identity has not been determined.</p>
+
+<p>This API returns the instance objects the url refers to.  At present it looks for movie and episode instances, but in future it could be extended to include series and programme instances.  It allows for returning lists of instances in case a VOD site does not provide unique stable urls for individual items.</p>
+
+<p>The JSON objects returned are as follows.</p>
+
+<table>
+<thead><tr>
+<th align="left">Name</th>
+<th align="left">Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">episode_instances</td>
+<td align="left">A list of matching episode instances</td>
+</tr>
+<tr>
+<td align="left">movie_instances</td>
+<td align="left">A list of matching movie instances</td>
+</tr>
+</tbody>
+</table><p>The following fields are returned for episode instances.</p>
+
+<table>
+<thead><tr>
+<th align="left">Name</th>
+<th align="left">Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">id</td>
+<td align="left">Tank Top ID for the instance</td>
+</tr>
+<tr>
+<td align="left">source_id</td>
+<td align="left">Tank Top ID for the source (i.e. for the VoD website)</td>
+</tr>
+<tr>
+<td align="left">series_instance_id</td>
+<td align="left">Tank Top ID for the series instance</td>
+</tr>
+<tr>
+<td align="left">programme_instance_id</td>
+<td align="left">Tank Top ID for the programme instance</td>
+</tr>
+<tr>
+<td align="left">programme_id</td>
+<td align="left">Tank Top ID for the programme. May be null</td>
+</tr>
+<tr>
+<td align="left">beamly_eid</td>
+<td align="left">Beamly episode ID if available</td>
+</tr>
+<tr>
+<td align="left">beamly_sid</td>
+<td align="left">Beamly series ID if available</td>
+</tr>
+<tr>
+<td align="left">beamly_bce</td>
+<td align="left">Beamly Broadcast Event ID if available</td>
+</tr>
+</tbody>
+</table><p>The following fields are returned for movie instances</p>
+
+<table>
+<thead><tr>
+<th align="left">Name</th>
+<th align="left">Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td align="left">id</td>
+<td align="left">Tank Top ID for the instance</td>
+</tr>
+<tr>
+<td align="left">source_id</td>
+<td align="left">Tank Top ID for the source (i.e. for the VoD website)</td>
+</tr>
+<tr>
+<td align="left">movie_id</td>
+<td align="left">Tank Top ID for the movie. May be null</td>
+</tr>
+<tr>
+<td align="left">beamly_eid</td>
+<td align="left">Beamly episode ID if available</td>
+</tr>
+<tr>
+<td align="left">beamly_sid</td>
+<td align="left">Beamly series ID if available</td>
+</tr>
+<tr>
+<td align="left">beamly_bce</td>
+<td align="left">Beamly Broadcast Event ID if available</td>
+</tr>
+</tbody>
+</table><p>See <a href="https://develop.beamly.com/apis/guide/epg">https://develop.beamly.com/apis/guide/epg</a> for details about Beamly identifiers.</p>
 
 <h2>
 <a name="credits" class="anchor" href="#credits"><span class="octicon octicon-link"></span></a>Credits</h2>
