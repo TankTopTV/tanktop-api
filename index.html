@@ -1284,20 +1284,31 @@ we recommend you keep to the following meanings and event names.</p>
 <td align="left">The canonical URL for the episode or film</td>
 <td align="left">Yes</td>
 </tr></tbody>
-</table><p>So far we have tested this with BBC IPlayer, ITVPlayer, 4oD &amp; Demand 5. Please read the notes on these below</p>
+</table><p>So far we have tested this with BBC IPlayer, ITVPlayer, 4oD &amp; Demand 5. Please read the notes on these below.</p>
 
 <h4>
 <a name="bbc-iplayer" class="anchor" href="#bbc-iplayer"><span class="octicon octicon-link"></span></a>BBC IPlayer</h4>
 
-<p>Urls look like this <a href="http://www.bbc.co.uk/iplayer/episode/b048zhsh/hardtalk-patrick-honohan-governor-central-bank-of-ireland">http://www.bbc.co.uk/iplayer/episode/b048zhsh/hardtalk-patrick-honohan-governor-central-bank-of-ireland</a>.  Note there is no trailing / and the slug is separated by - not _.  This matches the canonical <code>&lt;link&gt;</code> tag in the header of the IPlayer page for the episode (shown below). It does <em>not</em> match the URL provided in the BBC RSS feeds or from the programme website (which is missing the slug)</p>
+<p>Urls look like this <a href="http://www.bbc.co.uk/iplayer/episode/b048zhsh/hardtalk-patrick-honohan-governor-central-bank-of-ireland">http://www.bbc.co.uk/iplayer/episode/b048zhsh/hardtalk-patrick-honohan-governor-central-bank-of-ireland</a>.  The correct link is shown in the canonical <code>&lt;link&gt;</code> tag in the header of the IPlayer page for the episode (shown below). It does <em>not</em> match the URL provided in the BBC RSS feeds or from the programme website (which is missing the slug).</p>
 
 <pre><code>&lt;link rel="canonical" href="http://www.bbc.co.uk/iplayer/episode/b048zhsh/hardtalk-patrick-honohan-governor-central-bank-of-ireland"&gt;
 </code></pre>
 
+<p>You can use the following javascript within an episode page (i.e. as part of a browser extension or bookmarklet) to get the canonical URL.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">evaluate</span><span class="p">(</span><span class="s2">"//link[@rel='canonical']/@href"</span><span class="p">,</span> <span class="nb">document</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">XPathResult</span><span class="p">.</span><span class="nx">STRING_TYPE</span><span class="p">,</span> <span class="kc">null</span><span class="p">).</span><span class="nx">stringValue</span><span class="p">;</span>
+</pre></div>
+
 <h4>
 <a name="itvplayer" class="anchor" href="#itvplayer"><span class="octicon octicon-link"></span></a>ITVPlayer</h4>
 
-<p>ITVPlayer appears to be consistent in its links.  Here's an example of the links <a href="https://www.itv.com/itvplayer/all-star-mr-and-mrs/series-6/episode-2">https://www.itv.com/itvplayer/all-star-mr-and-mrs/series-6/episode-2</a>.</p>
+<p>Please provide the link for an episode, not for a programme. For example <a href="https://www.itv.com/itvplayer/all-star-mr-and-mrs/series-6/episode-2">https://www.itv.com/itvplayer/all-star-mr-and-mrs/series-6/episode-2</a>, not <a href="https://www.itv.com/itvplayer/all-star-mr-and-mrs">https://www.itv.com/itvplayer/all-star-mr-and-mrs</a>.</p>
+
+<p>Note if you land on a programme page, the latest episode is highlighted.  To get the episode URL of the highlighted episode you can use javascript like the following.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">episode</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="s2">"node-episode episode-highlight"</span><span class="p">)[</span><span class="mi">0</span><span class="p">];</span>
+<span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">protocol</span> <span class="o">+</span> <span class="s1">'//'</span> <span class="o">+</span> <span class="nb">document</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">host</span> <span class="o">+</span> <span class="nx">episode</span><span class="p">.</span><span class="nx">getAttribute</span><span class="p">(</span><span class="s1">'about'</span><span class="p">);</span>
+</pre></div>
 
 <h4>
 <a name="4od" class="anchor" href="#4od"><span class="octicon octicon-link"></span></a>4oD</h4>
@@ -1313,7 +1324,13 @@ we recommend you keep to the following meanings and event names.</p>
 <h4>
 <a name="demand-5" class="anchor" href="#demand-5"><span class="octicon octicon-link"></span></a>Demand 5</h4>
 
-<p>Demand 5 appears to be consistent in its links.  Here's an example: <a href="http://www.channel5.com/shows/thomas-and-friends/episodes/the-lion-of-sodor">http://www.channel5.com/shows/thomas-and-friends/episodes/the-lion-of-sodor</a>.</p>
+<p>Please provide the link for an episode, not for a programme. For example: <a href="http://www.channel5.com/shows/thomas-and-friends/episodes/the-lion-of-sodor">http://www.channel5.com/shows/thomas-and-friends/episodes/the-lion-of-sodor</a>, not <a href="http://www.channel5.com/shows/thomas-and-friends">http://www.channel5.com/shows/thomas-and-friends</a>.</p>
+
+<p>Note if you land on the programme page, the latest episode is displayed in a box to the right of the screen.  You can find the url for this episode with the following javascript.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">elt</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">'demand_episode_thumbnail'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">protocol</span> <span class="o">+</span> <span class="s1">'//'</span> <span class="o">+</span> <span class="nb">document</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">host</span> <span class="o">+</span> <span class="nx">elt</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">getAttribute</span><span class="p">(</span><span class="s1">'href'</span><span class="p">);</span>
+</pre></div>
 
 <h3>
 <a name="returned-values-3" class="anchor" href="#returned-values-3"><span class="octicon octicon-link"></span></a>Returned values</h3>
