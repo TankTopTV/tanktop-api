@@ -24,6 +24,7 @@ Use this API to match items in your catalog against the TankTop entertainment gr
 Valid itemtypes are `movie` and `programme`.
 
 #### Parameters
+
 | Name     | Value  | Required |
 |:--       |:--     | :--:     |
 | title    | Programme Title | y |
@@ -70,9 +71,11 @@ The array contains elements with the following fields
 #### Examples
 
 ##### Request
+
 `GET http://api.tanktop.tv/api/1/<apikey>/match/movie/?title=The%20Hunger%20Games&director=Gary%20Ross&year=2012`
 
 ##### Response
+
 ```json
 {
     "director": "Gary Ross",
@@ -90,6 +93,7 @@ The array contains elements with the following fields
 `GET http://api.tanktop.tv/api/1/<apikey>/match/programme/?title=Vikings&cast=Travis+Fimmel&cast=Clive+Standen`
 
 ##### Response
+
 ```json
 {
     "imdb_id": "tt2306299",
@@ -101,6 +105,7 @@ The array contains elements with the following fields
 ```
 
 ### Matching and ingestion service
+
 Provide us with a catalog feed or API and we will match and ingest it for you.  Please contact us at <hello@tanktop.tv> if you are interested.
 
 ## <a name="Sources"></a> Movie and TV Sources
@@ -122,6 +127,7 @@ of sources.
 
 
 #### Response
+
 ```json
 {
     "sources": [ {
@@ -186,23 +192,29 @@ Valid values for itemtype are 'movie' and 'programme'.
 
 
 ### Examples
+
 ##### Request
+
 `GET http://api.tanktop.tv/api/1/<api_key>/list/_/movie/?start=0&count=5&max_year=1960`
 
 ##### Response
+
 ```json
 {"ids": [691, 29106, 13785, 10104, 9318]}
 ```
 
 ##### Request
+
 `GET http://api.tanktop.tv/api/1/<api_key>/list/_/programme/?start=0&count=5`
 
 ##### Response
+
 ```json
 {"ids": [379, 668, 6416, 546, 269]}
 ```
 
 ## <a name="EPG"></a>EPG Ingestion
+
 Feed live TV data into the system.
 
 Live TV channels are treated in a similar way to on-demand sources, but with tighter availability windows.  You will need to define each of the channels within your system, and then supply a regular feed for the EPG data for each channel (or this can come directly from the channel operator if appropriate).
@@ -277,6 +289,7 @@ Get metadata for movies & TV shows.
 
 
 #### Category Objects
+
 Note that TV categories are distinct from Movie categories but may have overlapping names
 or ids
 
@@ -367,9 +380,11 @@ or ids
 ```
 
 ##### Request
+
 `GET http://api.tanktop.tv/api/1/<api_key>/programme/379/`
 
 ##### Response
+
 ```json
 {
     "programmes": [
