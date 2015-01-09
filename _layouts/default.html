@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Tank Top TV APIs">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Tank Top TV APIs{% if page.title %} - {{page.title}}{% endif %}</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <a class="logo" href="/"><img src="http://tanktoptv.com/images/logo-white.png" title="Tank Top TV"></a>
+        <header class="inner">
+          <h3>{% if page.title %}<a href="index.html">Tank Top TV APIs</a>{% endif %}</h3>
+          <h1 id="project_title">{% if page.title %}{{page.title}}{% else %}Tank Top TV APIs{% endif %}</h1>
+          {% if page.title %}{% else %}<h2 id="project_tagline">Personalization, recommendations and matching for movies, TV shows and other entertainment content</h2>{% endif %}
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1></h1>
+
+        {{ content }}
+
+      </section>
+    </div>
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Tanktop-api maintained by <a href="https://github.com/TankTopTV">TankTopTV</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-32505739-8");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+
+  </body>
+</html>
