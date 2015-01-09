@@ -72,7 +72,7 @@ These events are associated with content items (movies, TV programmes / series /
 
 Events supported for item type 'section' are described in [Section Lists](listOfLists.html#Events)
 
-#### <a name="ChannelEvents"><a/> Channel events
+#### <a name="ChannelEvents"></a> Channel events
 
 These events are associated with live TV channels
 
