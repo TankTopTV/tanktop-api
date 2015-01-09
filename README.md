@@ -5,14 +5,18 @@ Welcome to the Tank Top TV APIs.  These are free to use for non-commercial use w
 1. [Movie and TV matching API](#Matching)
 2. [Movie and TV sources](#Sources)
 3. [TV and Movie Source Ingestion](#Ingestion)
-4. [Listing Movies and TV](#ItemLists)
-5. [TV and Movie data](#ItemData)
-5. [User Profiles](#UserProfiles)
-6. [User Actions and Events](#UserActions)
-7. [Personalised Movie & TV lists](#PersonalizedLists)
-8. [Notifications](#Notifications)
-9. [Recommendations](#Recommendations)
-10. [Url lookup](#URLLookup)
+4. [EPG Ingestion](#EPG)
+5. [Listing Movies and TV](#ItemLists)
+6. [TV and Movie data](#ItemData)
+7. [User Profiles](#UserProfiles)
+8. [User Actions and Events](#UserActions)
+9. [Personalised Movie & TV lists](#PersonalizedLists)
+10. [Notifications](#Notifications)
+11. [Recommendations](#Recommendations)
+12. [Url lookup](#URLLookup)
+13. [Popular](#Popular)
+14. [Editorial Collections](#Collections)
+
 
 We're still in the process of documenting our APIs but please get in touch if you're interested in using an endpoint that is not fully written-up yet.
 
@@ -210,8 +214,18 @@ Valid values for itemtype are 'movie' and 'programme'.
 {"ids": [379, 668, 6416, 546, 269]}
 ```
 
+## <a name="EPG"></a>EPG Ingestion
+Feed live TV data into the system.
+
+Live TV content it is matched to existing catalog data so that
+- users can be offered recommendations from live TV as well as for on-demand content
+- users can be notified about content they are interested in when it appears on live TV
+- data about live viewing can more effectively influence overall content recommendations
+
+Please contact us at <hello@tanktop.tv> if you are interested in feeding EPG data into the Tank Top TV system. This is only available for commercial users.
+
 ## <a name="ItemData"></a>TV and Movie data
-Get metadata for the movies & TV shows.
+Get metadata for movies & TV shows.
 
 |Endpoint | Function|
 |:--|:--|
@@ -431,7 +445,6 @@ Profiles are JSON and you can store pretty much anything you want (but please, n
 ## <a name="UserActions"></a> User Actions and Events
 This is for tracking events that take place on your system so that user actions can feed into personalized listings and recommendations, as well as into analytics tracking.
 
-
 |Endpoint | Function|
 |:--|:--|
 |`POST /api/1/<apikey>/event/<userid>/<eventname>/<itemtype>/<itemid>/[<value>/]` | Create an event or add to a list |
@@ -445,7 +458,7 @@ Note that the userid does not have to be registered with Tank Top: you don't nee
 
 ### Parameters
 
-The GET version accepts a single parameter **id** which can be repeated. This specifies the item ids you want to query.  Our expectation is
+The GET version accepts a single parameter **id** which can be repeated. This specifies the item ids you want to query to see if there are any events associated with those items.  Our expectation is
 that you use events in the following manner.
 
 1. You retrieve a list of movie or programme ids.  See [below](#PersonalizedLists) for how you can filter these by event so that you can, say, list only items on a watchlist, or exclude hidden or seen items.
@@ -453,15 +466,36 @@ that you use events in the following manner.
 3. You get events for these ids, so that you can, for example, show the user's ratings for a show, or whether it is included in a watchlist.
 
 ### Event descriptions
-The Tank Top system does not treat events with different names any differently (at present - we reserve the right to change this in future), but
-we recommend you keep to the following meanings and event names.
+
+The Tank Top TV platform supports event reporting of event types with any arbitrary name, although the pre-defined events described here have specific meanings. If you want to report additional event types we recommend you discuss this with us so that we can agree a reserved event name that
+
+Posting these pre-defined events influences the Tank Top TV recommendations and personalization calculations. We recognize that not all UIs support all event types, so we work with commercial users of our platform to tune the parameters associated with the different event types.
+
+#### Content events
+
+These events are associated with content items (movies, TV programmes / series / episodes, whether on-demand or live.)
 
 | Event name | Description | Value |
 |:--         |:--          |:--    |
-| watchlist  | Items the user wants to watch | Not used |
-| seen       | Items the user has seen | Not used |
-| hide       | Items the user wants to strike out of lists | Not used |
-| rated     | Items the user has rated | A numeric rating.  Use positive numbers for positive sentiments, negative numbers for negative sentiments |
+| watchlist  | User wants to watch this item (later) - this adds the item to their watchlist | Not used |
+| seen       | User marks this item as seen | Not used |
+| hide       | User wants to strike this item out of lists (because they are not interested in it) | Not used |
+| rated      | User's rating for this item | A numeric rating.  Use positive numbers for positive sentiments, negative numbers for negative sentiments. |
+| progress   | User is partway through watching this item (applies to movies & TV episodes, but not to TV programmes or series) | Number of minutes watched so far |
+
+#### Section events
+
+Events supported for item type 'section' are described in [Section Lists](listOfLists.html#Events)
+
+#### <a name="ChannelEvents"><a/> Channel events
+
+These events are associated with live TV channels
+
+| Event name | Description | Value |
+|:--         |:--          |:--    |
+| hide       | User wants to strike this channel out of lists (because they are not interested in it) | Not used |
+| start      | User starts watching this channel | Timestamp |
+| end        | User stops watching this channel (e.g. channel change, TV off, DVR or on-demand content) | Timestamp |
 
 ### Examples
 #### Request
@@ -480,10 +514,6 @@ Here we ask if movies 1, 24 and 72 are in the user's watchlist.  1 and 24 are, 7
     "watchlist": {1:null, 24:null}
 }
 ```
-
-#### Coming soon
-- Multiple watchlists
-- Events for TV episodes
 
 ## <a name="PersonalizedLists"></a> Personalized Movie and TV lists
 
@@ -736,6 +766,26 @@ The following fields are returned for movie instances
 
 See https://develop.beamly.com/apis/guide/epg for details about Beamly identifiers.
 
+## <a name="Popular"></a> Popular content
+
+List of currently popular content on your service.  (Please contact us at <hello@tanktop.tv> if you want this endpoint enabled for your service.)
+
+|Endpoint | Function|
+|:--|:--|
+|`GET /api/1/<apikey>/popular/<itemtype>/[days/]`| Most popular items on your service over the last specified number of days (defaults to 7).  Itemtype may be 'movie' or 'programme' |
+|`GET /api/1/<apikey>/popular/live`| Most popular live channels on your service at this time (based on [Channel Events](#ChannelEvents)). Response includes data about the currently-playing item (as specified by the EPG) |
+
+## <a name="Collections"></a> Curated collections
+
+Manage editorial collections of content on your service.  (Please contact us at <hello@tanktop.tv> if you want this endpoint enabled for your service.)
+
+|Endpoint | Function|
+|:--|:--|
+|`GET /api/1/<apikey>/collection/`| Retrieve all the curated collection |
+|`GET /api/1/<apikey>/collection/<id>` | Retrieve the specified curated collection |
+|`POST /api/1/<apikey>/collection/`| Create a new curated collection |
+|`PATCH /api/1/<apikey>/collection/<id>`| Add a new content item to a curated collection |
+|`DELETE /api/1/<apikey>/collection/<id>`| Remove curated collection |
 
 ## Credits
 Some TV information is provided by http://www.thetvdb.com/ under a [Creative Commons 3.0 licence](http://creativecommons.org/licenses/by/3.0/us/)
