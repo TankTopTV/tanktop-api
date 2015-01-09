@@ -3,8 +3,6 @@ title: Section lists
 layout: default
 ---
 
-*[Tank Top TV APIs](../index.html)
-
 # Section Lists
 
 Section lists support the type of UI where content is arranged as a series of (typically) horizontal lists.  The lists are things like "popular movies", "because you watched" (i.e. items similar to something you've just watched), categories you might be interested in, etc.  We call these horizontal lists "sections".

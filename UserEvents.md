@@ -3,8 +3,6 @@ layout: default
 title: User, event and personalization APIs
 ---
 
-*Back to [Tank Top TV APIs](../index.html)
-
 1. [User Profiles](#UserProfiles)
 2. [User Actions and Events](#Events)
 3. [Notifications](#Notifications)
