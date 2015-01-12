@@ -94,6 +94,7 @@ Here we ask if movies 1, 24 and 72 are in the user's watchlist.  1 and 24 are, 7
 ``` GET http://api.tanktop.tv/api/1/<apikey>/event/7/watchlist/movie/?id=1&id=24&id=72 ```
 
 #### Response
+
 ```json
 {
     "watchlist": {1:null, 24:null}
@@ -147,6 +148,7 @@ Here we ask, on behalf of user 7, to be notified when movie 1 becomes available 
 ``` POST http://api.tanktop.tv/api/1/<apikey>/notification/7/movie/1/ ```
 
 Post body (content-type: application/json)
+
 ```json
 {
     "source_id" : [7, 37, 28]
@@ -159,6 +161,7 @@ Here we ask what notifications are outstanding for user 7.
 ``` GET http://api.tanktop.tv/api/1/<apikey>/notification/7/ ```
 
 #### Response
+
 ```json
 {
     "notifications": [{
@@ -172,6 +175,10 @@ Here we ask what notifications are outstanding for user 7.
     }]
 }
 ```
+
+### Sports notifications
+
+When a user has a preference for a particular [sport or sports team](../sportomaton.html), events will also be generated for content that matches those preferences.
 
 ## <a name="Recommendations"></a> Recommendations
 
