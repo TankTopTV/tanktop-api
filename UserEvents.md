@@ -9,6 +9,7 @@ title: User, event and personalization APIs
 4. [Recommendations](#Recommendations)
 5. [Bookmarks](#Bookmarks)
 
+
 ## <a name="UserProfiles"></a> User Profiles
 
 We support independent sets of user profiles for different services, one of which is the Tank Top TV service. Access to
@@ -28,7 +29,7 @@ You can use our User profiles API to store user settings and details as JSON dat
 Profiles are JSON and you can store pretty much anything you want (but please, no important personal information just yet).  Currently, the only restrictions are that the user ID is stored under the key 'id', and that top-level keys starting _ are reserved for our future use.
 
 ## <a name="Events"></a> User Actions and Events
-This is for tracking events that take place on your system so that user actions can feed into personalized listings and recommendations, as well as into analytics tracking.
+This is for tracking events that take place on your system so that user actions can feed into personalized listings and recommendations (for both on-demand and live content), as well as into analytics tracking.
 
 |Endpoint | Function|
 |:--|:--|

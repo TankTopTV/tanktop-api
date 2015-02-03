@@ -1,7 +1,7 @@
 ---
 layout: default
 ---
-Welcome to the Tank Top TV APIs.  These are free to use for non-commercial use within reasonable usage limits, but please get in touch with us at <hello@tanktop.tv> if you'd like to use them for commercial purposes.
+Welcome to the Tank Top TV APIs.  Except where indicated otherwise, these are free to use for non-commercial use within reasonable usage limits, but please get in touch with us at <hello@tanktop.tv> if you'd like to use them for commercial purposes. 
 
 For more information about what you can do with these APIs please visit our [technology website](http://tanktoptv.com). To see our technology in action, or to find something great to watch, please check ut [Tank Top TV](http://tanktop.tv).
 
