@@ -5,7 +5,9 @@ Welcome to the Tank Top TV APIs.  Except where indicated otherwise, these are fr
 
 For more information about what you can do with these APIs please visit our [technology website](http://tanktoptv.com). To see our technology in action, or to find something great to watch, please check ut [Tank Top TV](http://tanktop.tv).
 
-We're still in the process of documenting our APIs but please get in touch if you're interested in using an endpoint that is not fully written-up yet.
+We're still in the process of documenting our APIs but please get in touch if you're interested in using an endpoint that is not fully written-up yet. (This documentation is [hosted on GitHub](https://github.com/TankTopTV/tanktop-api) and pull requests are welcome!) 
+
+If you need a solution for tracking the usage of your own APIs you may like to check out [APInalytics](https://github.com/apinalytics/apinalytics).
 
 ## API usage
 
